@@ -9,18 +9,10 @@
 - Place_of_birth
 - Age (can be Dynamic?)
 - Height
-- Weight (!!!)
 - Citizenship
-- position
 - foot
 - agent
-- Current_Cotract_ID
-- Joined
-- contract_expires
-- contract_option
 - outfitter
-- Current_Club
-- Team_ID
 - Social_Media
 
 ### League
@@ -28,7 +20,7 @@
 - League_ID
 - League_Name
 - UEFA_coefficient
-- Recod_holding_Champion
+- Record_holding_Champion
 
 ### Teams
 
@@ -37,9 +29,6 @@
 - League_level
 - Table_Position
 - In_league_since
-- Squad_size
-- Average_age
-- Foreigners
 - National_team_players
 - Stadium
 - Current_transfer_record
@@ -61,6 +50,7 @@
 - Joined_Team
 - Fee_of_Transfer
 - Contract_Length
+- Contract_Type (Loan, Hamishegi)
 
 ### Player_appearances
 
@@ -70,11 +60,12 @@
 - Shirt_Number
 - Starter (boolean and optional)
 - Substitute_on
-- Substitute_off
+- Substitute_off (nollable
 - Minutes_played
 - On_the_bench (boolean)
 - Injured (type of injury)
-- Position
+- Position_Code
+- Postion_Name
 - captain
 - Num_of_Goals
 - Num_of_Assists
@@ -83,27 +74,34 @@
 - Second_Yellow_Card_Time
 - Red_Card_Time
 
-### Match (?)
+### Match
 
 - Match_ID
+- Season_ID
 - League_ID
 - Home_Team_ID
 - Away_team_ID
 - Date
+- Stadium
+- Attendence
+- Match_Day
+- Referee
 - Result
 - Home_Team_Goals
 - Away_Team_Goals
-- Stadium
-- Attendence
+- Home_team_win
+- Away_Team_Win
+- Draw
 
-### Goals (?)
+### Goals
 
 - Match_ID
 - Scorrer_ID
 - Assist_ID
 - Time
-- Team_Reciver_Goal
-- Match_period (?)
+- Team_Scorer_ID
+- Match_Period (?)
+- Goal_Type (categical: penalty, own_goal ,...)
 
 ### Awards
 
@@ -114,7 +112,15 @@
 ### Award_Winners
 
 - Award_ID
+- Season_ID
 - Player_ID
+
+### Season
+
+- Season_ID
+- Season
+
+### We can add (Substitution and Cards Tables too)
 
 ## Relationships
 
