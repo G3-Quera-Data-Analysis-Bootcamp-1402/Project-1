@@ -7,7 +7,6 @@
 - Player_ID
 - Date_of_birth
 - Place_of_birth
-- Age (can be Dynamic?)
 - Height
 - Citizenship
 - foot
@@ -26,12 +25,8 @@
 
 - Team_ID
 - Team_name
-- League_level
-- Table_Position
 - In_league_since
-- National_team_players
 - Stadium
-- Current_transfer_record
 - Club_Awards
 
 ### Market_value
@@ -50,7 +45,15 @@
 - Joined_Team
 - Fee_of_Transfer
 - Contract_Length
-- Contract_Type (Loan, Hamishegi)
+- Contract_Type (Categorical: Loan, Hamishegi)
+
+### Team_appearances
+
+- Team_ID
+- Season_ID
+- League_ID
+- National_team_players
+- Season_Transfer_Record
 
 ### Player_appearances
 
@@ -121,6 +124,8 @@
 - Season
 
 ### We can add (Substitution and Cards Tables too)
+
+### Optional: National_Team Table
 
 ## Relationships
 
