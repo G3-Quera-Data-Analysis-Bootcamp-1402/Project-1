@@ -1,0 +1,6 @@
+[project]
+name = "transfermarkt_analysis"
+version = "0.0.1"
+description = "do statistical analysis and ml on scraped data from transfermarkt.com"
+readme = "README.md"
+requires-python = ">=3.6"
