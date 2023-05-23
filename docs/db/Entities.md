@@ -53,14 +53,17 @@
 - Season_ID
 - League_ID
 - National_team_players
-- Season_Transfer_Record
+- Team_income_fee
+- Team_expenditure_fee
+- Team_arrivals
+- Team_departures
 
 ### Player_appearances
 
 - Match_ID
 - Team_ID
 - Player_ID
-- Starter (boolean and optional)
+- Starter (boolean)
 - Substitute_on (int, nullable)
 - Substitute_off (int, nullable)
 - Minutes_played
@@ -117,6 +120,12 @@
 - Award_ID
 - Season_ID
 - Player_ID
+
+### Award_Winners_Teams
+
+- Award_ID
+- Award_Name
+- Team_ID
 
 ### Season
 
