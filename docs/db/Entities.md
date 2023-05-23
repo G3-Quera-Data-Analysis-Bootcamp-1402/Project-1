@@ -6,10 +6,10 @@
 
 - Player_ID
 - Date_of_birth
-- Place_of_birth
 - Height
 - Citizenship
 - foot
+- Place_of_birth
 - agent
 - outfitter
 - Social_Media
@@ -25,9 +25,9 @@
 
 - Team_ID
 - Team_name
-- In_league_since
-- Stadium
 - Club_Awards
+- Stadium
+- In_league_since
 
 ### Market_value
 
@@ -60,22 +60,22 @@
 - Match_ID
 - Team_ID
 - Player_ID
-- Shirt_Number
 - Starter (boolean and optional)
-- Substitute_on
-- Substitute_off (nollable
+- Substitute_on (int, nullable)
+- Substitute_off (int, nullable)
 - Minutes_played
 - On_the_bench (boolean)
-- Injured (type of injury)
-- Position_Code
-- Postion_Name
-- captain
-- Num_of_Goals
-- Num_of_Assists
-- Num_of_Owngoals
-- Yellow_Card_Time
-- Second_Yellow_Card_Time
-- Red_Card_Time
+- Injured (type of injury) (string, nullable)
+- Position_Code (string)
+- Postion_Name (string)
+- captain (boolean, nullable)
+- Num_of_Goals (int, nullable)
+- Num_of_Assists (int, nullable)
+- Num_of_Owngoals (int, nullable)
+- Yellow_Card_Time (int, nullable)
+- Second_Yellow_Card_Time (int, nullable)
+- Red_Card_Time (int, nullable)
+- Shirt_Number
 
 ### Match
 
@@ -84,33 +84,33 @@
 - League_ID
 - Home_Team_ID
 - Away_team_ID
-- Date
-- Stadium
-- Attendence
-- Match_Day
-- Referee
-- Result
-- Home_Team_Goals
-- Away_Team_Goals
-- Home_team_win
-- Away_Team_Win
-- Draw
+- Match_Day (int)
+- Home_Team_Goals (int)
+- Away_Team_Goals (int)
+- Home_team_win (boolean)
+- Away_Team_Win (boolean)
+- Draw (boolean)
+- Result (string): can be derived from HTG and ATG
+- Referee (string)
+- Date (datetime)
+- Stadium (string)
+- Attendence (int)
 
 ### Goals
 
 - Match_ID
 - Scorrer_ID
 - Assist_ID
-- Time
 - Team_Scorer_ID
+- Goal_Type (categical: penalty, own_goal ,...) (string)
+- Time (int)
 - Match_Period (?)
-- Goal_Type (categical: penalty, own_goal ,...)
 
 ### Awards
 
 - Award_ID
-- Award_name
-- Award_description
+- Award_name (string)
+- Award_description (string)
 
 ### Award_Winners
 
@@ -121,7 +121,7 @@
 ### Season
 
 - Season_ID
-- Season
+- Season (string)
 
 ### We can add (Substitution and Cards Tables too)
 
