@@ -5,10 +5,10 @@
 ### Players
 
 - Player_ID
-- Date_of_birth
-- Height
-- Citizenship
-- foot
+- Date_of_birth (timesamp)
+- Height (int)
+- Citizenship (string)
+- foot (enumerate, string)
 - Place_of_birth
 - agent
 - outfitter
@@ -17,14 +17,14 @@
 ### League
 
 - League_ID
-- League_Name
+- League_Name (string)
 - UEFA_coefficient
 - Record_holding_Champion
 
 ### Teams
 
 - Team_ID
-- Team_name
+- Team_name (string)
 - Club_Awards
 - Stadium
 - In_league_since
@@ -33,17 +33,17 @@
 
 - Player_ID
 - Season_ID
-- Market_value
+- Market_value (integer)
 
 ### Contract (Transfer)
 
 - Contract_ID
 - Player_ID
 - Season_ID
-- Date
-- Left_team
-- Joined_Team
-- Fee_of_Transfer
+- Date (date)
+- Left_team (int, id)
+- Joined_Team (int, id)
+- Fee_of_Transfer (int)
 - Contract_Length
 - Contract_Type (Categorical: Loan, Hamishegi)
 
@@ -52,9 +52,9 @@
 - Team_ID
 - Season_ID
 - League_ID
-- National_team_players
-- Team_income_fee
-- Team_expenditure_fee
+- National_team_players (int)
+- Team_income_fee (int)
+- Team_expenditure_fee (int)
 - Team_arrivals
 - Team_departures
 
@@ -124,8 +124,9 @@
 ### Award_Winners_Teams
 
 - Award_ID
-- Award_Name
+- Season_ID
 - Team_ID
+- Award_Name (string)
 
 ### Season
 
@@ -137,4 +138,6 @@
 ### Optional: National_Team Table
 
 ## Relationships
+
+### the relationships are already implemented in DB
 
