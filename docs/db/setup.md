@@ -4,7 +4,7 @@
 
 please follow [EdgeDB](https://www.edgedb.com)'s installation instructions 
 
-## Run `migration` and `migrate` commands
+## Run commands
 
 After cloning the project please go to `src/transfermarkt/db` directory, then execute these commands
 
