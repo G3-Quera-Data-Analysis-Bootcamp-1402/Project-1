@@ -43,12 +43,12 @@ def create_tables():
     """
     db_engine = create_engine(db_url)
     metadata = MetaData()
-    
     # players table
     players = Table(
         "players", 
         metadata, 
         Column("player_id", Integer, autoincrement=True, primary_key=True),
+        Column("player_name", String(64)),
         Column("date_of_birth", TIMESTAMP),
         Column("height", Integer),
         Column("citizenship", String(32)),
