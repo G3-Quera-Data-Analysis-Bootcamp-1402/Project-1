@@ -1,51 +1,29 @@
-# Database connection setup
+# Database Connection Setup
 
-## Create database using your rdbms cli (**mysql recommended**)
+## Install EdgeDB cli
 
-- mysql
+please follow [EdgeDB](https://www.edgedb.com)'s installation instructions 
 
+## Run `migration` and `migrate` commands
+
+After cloning the project please go to `src/transfermarkt/db` directory, then execute these commands
+
+1.
     ```shell
-    mysql -u root -p
+    edgedb project init
     ```
-    you need to enter your password in opened prompt
-
-- mycli
+2. 
     ```shell
-    mycli -u root -p <replace-your-password>
-    ```
-
-- after executing `mysql` or `mycli` (you can name database whatever you want)
-    ```shell
-    > create database transfermarkt;
+    edgedb migration create
     ```
 
-## Create .env file
-
-First at all we need to create `.env` file in project root because in `src/transfermarkt/db/schema.py` file we read database connection configuration from `.env` file. 
-
-`.env` file should be like:
-
-
-```
-DB_USER="root"
-DB_PASSWORD="<your-password>"
-DB_HOST="localhost"
-DB_PORT=3306
-DB_NAME="transfermarkt"
-```
-
-## execute create_tables functions
-
-execute python command in your terminal
-
-```shell
-python
-```
-
-```shell
->>> from transfermarkt_analysis.db.schema import create_tables
->>> create_tables()
->>> exit()
-```
-
-**Done!** You can check tables created in given database
+3.
+    ```shell
+    edgedb migrate
+    ```
+4.
+    if you didn't got errors you can check types created in your database by running
+    
+    ```shell
+    edgedb ui
+    ```
