@@ -18,3 +18,21 @@
 ## کد منبع
 کد منبع یا همان source code پروژه را میتوانید در فولدر src/transfermarkt_values مشاهده بفرمایید
 
+## راه اندازی پروژه
+بعد از کلون کردن پروژه لطفا مراحل زیر را اجرا کنید
+
+- ساخت محیط مجازی (venv)
+
+    ```shell
+    python -m venv venv
+    ```
+    or
+
+    ```shell
+    virtualenv venv
+    ```
+- اکتیو کردن محیط مجازی
+- نصب پکیج
+    ```shell
+    pip install .
+    ```
