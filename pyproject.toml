@@ -9,7 +9,8 @@ dependencies = [
   "urllib3",
   "beautifulsoup4",
   "mysql-connector-python",
-  "sqlalchemy"
+  "sqlalchemy",
+  "python-dotenv"
 ]
 
 [build.system]
