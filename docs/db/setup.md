@@ -12,16 +12,12 @@ After cloning the project please go to `src/transfermarkt/db` directory, then ex
     ```shell
     edgedb project init
     ```
-2. 
-    ```shell
-    edgedb migration create
-    ```
-
-3.
+2.
     ```shell
     edgedb migrate
     ```
-4.
+    
+3.
     if you didn't got errors you can check types created in your database by running
     
     ```shell
