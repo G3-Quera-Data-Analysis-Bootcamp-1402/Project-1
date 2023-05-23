@@ -8,9 +8,8 @@ dependencies = [
   "requests",
   "urllib3",
   "beautifulsoup4",
-  "mysql-connector-python",
-  "sqlalchemy",
-  "python-dotenv"
+  "python-dotenv",
+  "edgedb"
 ]
 
 [build.system]
