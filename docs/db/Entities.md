@@ -6,21 +6,12 @@
 
 - Player_ID
 - Date_of_birth
-- Place_of_birth
-- Age (can be Dynamic?)
 - Height
-- Weight (!!!)
 - Citizenship
-- position
 - foot
+- Place_of_birth
 - agent
-- Current_Cotract_ID
-- Joined
-- contract_expires
-- contract_option
 - outfitter
-- Current_Club
-- Team_ID
 - Social_Media
 
 ### League
@@ -28,22 +19,15 @@
 - League_ID
 - League_Name
 - UEFA_coefficient
-- Recod_holding_Champion
+- Record_holding_Champion
 
 ### Teams
 
 - Team_ID
 - Team_name
-- League_level
-- Table_Position
-- In_league_since
-- Squad_size
-- Average_age
-- Foreigners
-- National_team_players
-- Stadium
-- Current_transfer_record
 - Club_Awards
+- Stadium
+- In_league_since
 
 ### Market_value
 
@@ -61,60 +45,96 @@
 - Joined_Team
 - Fee_of_Transfer
 - Contract_Length
+- Contract_Type (Categorical: Loan, Hamishegi)
+
+### Team_appearances
+
+- Team_ID
+- Season_ID
+- League_ID
+- National_team_players
+- Team_income_fee
+- Team_expenditure_fee
+- Team_arrivals
+- Team_departures
 
 ### Player_appearances
 
 - Match_ID
 - Team_ID
 - Player_ID
-- Shirt_Number
-- Starter (boolean and optional)
-- Substitute_on
-- Substitute_off
+- Starter (boolean)
+- Substitute_on (int, nullable)
+- Substitute_off (int, nullable)
 - Minutes_played
 - On_the_bench (boolean)
-- Injured (type of injury)
-- Position
-- captain
-- Num_of_Goals
-- Num_of_Assists
-- Num_of_Owngoals
-- Yellow_Card_Time
-- Second_Yellow_Card_Time
-- Red_Card_Time
+- Injured (type of injury) (string, nullable)
+- Position_Code (string)
+- Postion_Name (string)
+- captain (boolean, nullable)
+- Num_of_Goals (int, nullable)
+- Num_of_Assists (int, nullable)
+- Num_of_Owngoals (int, nullable)
+- Yellow_Card_Time (int, nullable)
+- Second_Yellow_Card_Time (int, nullable)
+- Red_Card_Time (int, nullable)
+- Shirt_Number
 
-### Match (?)
+### Match
 
 - Match_ID
+- Season_ID
 - League_ID
 - Home_Team_ID
 - Away_team_ID
-- Date
-- Result
-- Home_Team_Goals
-- Away_Team_Goals
-- Stadium
-- Attendence
+- Match_Day (int)
+- Home_Team_Goals (int)
+- Away_Team_Goals (int)
+- Home_team_win (boolean)
+- Away_Team_Win (boolean)
+- Draw (boolean)
+- Result (string): can be derived from HTG and ATG
+- Referee (string)
+- Date (datetime)
+- Stadium (string)
+- Attendence (int)
 
-### Goals (?)
+### Goals
 
 - Match_ID
 - Scorrer_ID
 - Assist_ID
-- Time
-- Team_Reciver_Goal
-- Match_period (?)
+- Team_Scorer_ID
+- Goal_Type (categical: penalty, own_goal ,...) (string)
+- Time (int)
+- Match_Period (?)
 
 ### Awards
 
 - Award_ID
-- Award_name
-- Award_description
+- Award_name (string)
+- Award_description (string)
 
 ### Award_Winners
 
 - Award_ID
+- Season_ID
 - Player_ID
+
+### Award_Winners_Teams
+
+- Award_ID
+- Award_Name
+- Team_ID
+
+### Season
+
+- Season_ID
+- Season (string)
+
+### We can add (Substitution and Cards Tables too)
+
+### Optional: National_Team Table
 
 ## Relationships
 
