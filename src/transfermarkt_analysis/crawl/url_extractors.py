@@ -33,7 +33,7 @@ def player_urls_extractor():
                 "table > tbody > tr > td:nth-child(1) > div > span.show-for-small > a"
             )
             for result in soup.select(selectors, href=True):
-                yield {"name": result.get_text(), "url": result["href"]}
+                yield {"url": result["href"]}
 
 
 def store_player_urls():
@@ -43,7 +43,7 @@ def store_player_urls():
     then use .to_csv method to store it as csv file in crawl/data/urls dir
     """
     df = pd.DataFrame(player_urls_extractor())
-    df.drop_duplicates().to_csv(urls_dir / "players_url")
+    df.drop_duplicates().to_csv(urls_dir / "players_url.csv")
 
 
 def store_all():
