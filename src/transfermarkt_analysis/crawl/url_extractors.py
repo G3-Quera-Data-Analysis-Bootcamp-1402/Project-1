@@ -1,13 +1,12 @@
-import pathlib
 import urllib3
 from bs4 import BeautifulSoup
 import pandas as pd
 
+from transfermarkt_analysis.crawl.consts import HEADERS, URLS_DIR
+
 http = urllib3.PoolManager()
 
-headers = {
-    "User-Agent": "	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
-}
+
 
 league_urls = {
     "england": "https://transfermarkt.com/premier-league/transfers/wettbewerb/GB1/plus/",
@@ -17,7 +16,6 @@ league_urls = {
     "france": "https://transfermarkt.com/ligue-1/transfers/wettbewerb/FR1/plus/",
 }
 
-urls_dir = pathlib.Path(__file__).resolve().parent / "data/urls"
 
 def player_urls_extractor():
     """
@@ -26,7 +24,7 @@ def player_urls_extractor():
     for season in range(2015, 2022):
         for league_url in league_urls.values():
             resp = http.request(
-                "GET", league_url, headers=headers, fields={"saison_id": season}
+                "GET", league_url, headers=HEADERS, fields={"saison_id": season}
             )
             soup = BeautifulSoup(resp.data, "html.parser")
             selectors = (
@@ -43,7 +41,7 @@ def store_player_urls():
     then use .to_csv method to store it as csv file in crawl/data/urls dir
     """
     df = pd.DataFrame(player_urls_extractor())
-    df.drop_duplicates().to_csv(urls_dir / "players_url.csv")
+    df.drop_duplicates().to_csv(URLS_DIR / "players_url.csv")
 
 
 def store_all():
