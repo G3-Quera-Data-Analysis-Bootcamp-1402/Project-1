@@ -1,37 +1,44 @@
+import os
 import urllib3
 from bs4 import BeautifulSoup
 import pandas as pd
 
-from transfermarkt_analysis.crawl.consts import HEADERS, URLS_DIR
-
-http = urllib3.PoolManager()
+from transfermarkt_analysis.crawl.consts import BASE_URL, LEAGUE_URLS, HEADERS, URLS_DIR, SEASONS_RANGE
 
 
-
-league_urls = {
-    "england": "https://transfermarkt.com/premier-league/transfers/wettbewerb/GB1/plus/",
-    "spain": "https://transfermarkt.com/laliga/transfers/wettbewerb/ES1/plus/plus/",
-    "germany": "https://transfermarkt.com/bundesliga/transfers/wettbewerb/L1/plus/",
-    "italy": "https://transfermarkt.com/serie-a/transfers/wettbewerb/IT1/plus/",
-    "france": "https://transfermarkt.com/ligue-1/transfers/wettbewerb/FR1/plus/",
-}
+http = urllib3.PoolManager(headers=HEADERS)
 
 
 def player_urls_extractor():
     """
     get player column href attr (url of players profiles) for each season
     """
-    for season in range(2015, 2022):
-        for league_url in league_urls.values():
+    for league_url in LEAGUE_URLS.values():
+        for season in SEASONS_RANGE:
             resp = http.request(
-                "GET", league_url, headers=HEADERS, fields={"saison_id": season}
+                "GET", league_url + "/plus/", fields={"saison_id": season}
             )
             soup = BeautifulSoup(resp.data, "html.parser")
-            selectors = (
+            selector = (
                 "table > tbody > tr > td:nth-child(1) > div > span.show-for-small > a"
             )
-            for result in soup.select(selectors, href=True):
-                yield {"url": result["href"]}
+            for result in soup.select(selector, href=True):
+                yield {"url": BASE_URL + result["href"]}
+
+
+def team_urls_extractor():
+    """
+    get url for each team exist in specific season
+    """
+    for league_url in LEAGUE_URLS.values():
+        for season in SEASONS_RANGE:
+            resp = http.request(
+                "GET", league_url + "/plus/", fields={"saison_id": season}
+            )
+            soup = BeautifulSoup(resp.data, "html.parser")
+            selector = "h2.content-box-headline.content-box-headline--inverted.content-box-headline--logo > a:nth-child(2)"
+            for result in soup.select(selector, href=True):
+                yield {"url": BASE_URL + result["href"]}
 
 
 def store_player_urls():
@@ -44,8 +51,25 @@ def store_player_urls():
     df.drop_duplicates().to_csv(URLS_DIR / "players_url.csv")
 
 
-def store_all():
+def store_team_urls():
     """
-         call all store functions
+    call player_urls_extractor and store result as pandas.DataFrame
+    and drop duplicates because we can have multiple profiles for same player
+    then use .to_csv method to store it as csv file in crawl/data/urls dir
     """
-    store_player_urls()
+    df = pd.DataFrame(team_urls_extractor())
+    df.drop_duplicates().to_csv(URLS_DIR / "team_urls.csv")
+
+
+def store_all_urls():
+    """
+         call all store functions (if .csv file exist in data/urls ignores related store functions)
+    """
+    store_funcs = {
+        "player_urls.csv": store_player_urls,
+        "team_urls.csv": store_team_urls,
+    }
+    
+    for csv_file in store_funcs.keys():
+        if csv_file not in os.listdir(URLS_DIR):
+            store_funcs[csv_file]()
