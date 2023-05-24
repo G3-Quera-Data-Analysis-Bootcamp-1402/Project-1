@@ -48,7 +48,7 @@ def store_player_urls():
     then use .to_csv method to store it as csv file in crawl/data/urls dir
     """
     df = pd.DataFrame(player_urls_extractor())
-    df.drop_duplicates().to_csv(URLS_DIR / "players_url.csv")
+    df.drop_duplicates().to_csv(URLS_DIR / "player_urls.csv")
 
 
 def store_team_urls():
@@ -71,5 +71,9 @@ def store_all_urls():
     }
     
     for csv_file in store_funcs.keys():
-        if csv_file not in os.listdir(URLS_DIR):
+        if csv_file in os.listdir(URLS_DIR):
+            print(f"already {csv_file} exists in {URLS_DIR}")
+        else:
             store_funcs[csv_file]()
+
+store_all_urls()
