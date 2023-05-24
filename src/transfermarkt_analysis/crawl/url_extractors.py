@@ -50,16 +50,17 @@ def store_player_urls():
     then use .to_csv method to store it as csv file in crawl/data/urls dir
     """
     df = pd.DataFrame(player_urls_extractor())
-    df.drop_duplicates().to_csv(URLS_DIR / "player_urls.csv")
+    df.drop_duplicates().to_csv(URLS_DIR / "player_urls.csv", index=False)
 
 
 def store_team_urls():
     """
-    call player_urls_extractor and store result as pandas.DataFrame
+    call team_urls_extractor and store result as pandas.DataFrame
     then use .to_csv method to store it as csv file in crawl/data/urls dir
     """
     df = pd.DataFrame(team_urls_extractor())
-    df.to_csv(URLS_DIR / "team_urls.csv")
+    df.to_csv(URLS_DIR / "team_urls.csv", index=False)
+
 
 
 def store_all_urls():
