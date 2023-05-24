@@ -75,5 +75,3 @@ def store_all_urls():
             print(f"already {csv_file} exists in {URLS_DIR}")
         else:
             store_funcs[csv_file]()
-
-store_all_urls()
