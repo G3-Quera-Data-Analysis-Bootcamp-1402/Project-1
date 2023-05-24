@@ -3,7 +3,7 @@ import urllib3
 from bs4 import BeautifulSoup
 import pandas as pd
 
-from transfermarkt_analysis.crawl.consts import BASE_URL, LEAGUE_URLS, HEADERS, URLS_DIR, SEASONS_RANGE
+from transfermarkt_analysis.crawl.consts import BASE_URL, LEAGUE_TRANSFERS_URLS, HEADERS, URLS_DIR, SEASONS_RANGE
 
 
 http = urllib3.PoolManager(headers=HEADERS)

@@ -2,7 +2,7 @@ import pathlib
 
 BASE_URL = "https://transfermarkt.com"
 
-LEAGUE_URLS = {
+LEAGUE_TRANSFERS_URLS = {
     "england": "https://transfermarkt.com/premier-league/transfers/wettbewerb/GB1",
     "spain": "https://transfermarkt.com/laliga/transfers/wettbewerb/ES1",
     "germany": "https://transfermarkt.com/bundesliga/transfers/wettbewerb/L1",
