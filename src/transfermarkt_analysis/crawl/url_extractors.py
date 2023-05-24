@@ -1,10 +1,12 @@
 import os
+
+import pandas as pd
 import urllib3
 from bs4 import BeautifulSoup
-import pandas as pd
 
-from transfermarkt_analysis.crawl.consts import BASE_URL, LEAGUE_TRANSFERS_URLS, HEADERS, URLS_DIR, SEASONS_RANGE
-
+from transfermarkt_analysis.crawl.consts import (BASE_URL, HEADERS,
+                                                 LEAGUE_TRANSFERS_URLS,
+                                                 SEASONS_RANGE, URLS_DIR)
 
 http = urllib3.PoolManager(headers=HEADERS)
 
@@ -13,7 +15,7 @@ def player_urls_extractor():
     """
     get player column href attr (url of players profiles) for each season
     """
-    for league_url in LEAGUE_URLS.values():
+    for league_url in LEAGUE_TRANSFERS_URLS.values():
         for season in SEASONS_RANGE:
             resp = http.request(
                 "GET", league_url + "/plus/", fields={"saison_id": season}
@@ -30,7 +32,7 @@ def team_urls_extractor():
     """
     get url for each team exist in specific season
     """
-    for league_url in LEAGUE_URLS.values():
+    for league_url in LEAGUE_TRANSFERS_URLS.values():
         for season in SEASONS_RANGE:
             resp = http.request(
                 "GET", league_url + "/plus/", fields={"saison_id": season}
@@ -62,13 +64,13 @@ def store_team_urls():
 
 def store_all_urls():
     """
-         call all store functions (if .csv file exist in data/urls ignores related store functions)
+    call all store functions (if .csv file exist in data/urls ignores related store functions)
     """
     store_funcs = {
         "player_urls.csv": store_player_urls,
         "team_urls.csv": store_team_urls,
     }
-    
+
     for csv_file in store_funcs.keys():
         if csv_file in os.listdir(URLS_DIR):
             print(f"already {csv_file} exists in {URLS_DIR}")
