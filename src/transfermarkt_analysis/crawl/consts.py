@@ -24,6 +24,8 @@ HEADERS = {
 
 SEASONS_RANGE = range(2015, 2022)
 
+MATHDAY_RANGE = range(1, 39)
+
 # for get easy access to data/urls directory and by adding / you can add path
 # example for accessing to player_urls.csv URLS_DIR / "player_urls.csv" -> data/urls/player_urls.csv
 URLS_DIR = pathlib.Path("data/urls")
