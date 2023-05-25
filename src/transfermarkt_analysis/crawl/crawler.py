@@ -104,13 +104,25 @@ def scrape_player_data(player_url: str) -> tuple:
         soup = BeautifulSoup(resp.data, "html.parser")
         return soup
     
+    def get_player_name(soup: BeautifulSoup) -> str:
+        """
+        returns player name
+        """
+        name_string = soup.find("h1", attrs= {"class": "data-header__headline-wrapper"}).text.strip()
+        if "\n" in name_string:
+            name_string = name_string.split("\n")[1].strip()
+        return name_string
+    
     def get_dob(soup: BeautifulSoup) -> int:
         """
         returns player's date of birth as POSIX timestamp
         """
-        selector = "#main > main > div:nth-child(8) > div.large-8.columns > div:nth-child(4) > div > div.large-6.large-pull-6.small-12.columns.spielerdatenundfakten > div > span:nth-child(4) > a"
-        dob = soup.select_one(selector).text.strip()
-        datetime_object = datetime.strptime(dob, "%b %-d, %Y")
+        dob = soup.find("span", attrs= {"itemprop": "birthDate"}).text.strip().lower()[:12].strip()
+        
+        if dob[4] == ' ':
+            dob = dob[:4] + "0" + dob[4:]
+
+        datetime_object = datetime.strptime(dob, '%b %d, %Y')
         timestamp = int(datetime.timestamp(datetime_object))
         return timestamp
     
@@ -118,8 +130,7 @@ def scrape_player_data(player_url: str) -> tuple:
         """
         returns player height in cm
         """
-        selector = "#main > main > div:nth-child(8) > div.large-8.columns > div:nth-child(4) > div > div.large-6.large-pull-6.small-12.columns.spielerdatenundfakten > div > span:nth-child(10)"
-        height_string = soup.select_one(selector).text.strip()
+        height_string = soup.find("span", attrs= {"itemprop": "height"}).text.strip()
         meters = int(height_string[:4].split(",")[0])
         centimeters = int(height_string[:4].split(",")[1])
         height_in_cm = meters * 100 + centimeters
@@ -129,32 +140,39 @@ def scrape_player_data(player_url: str) -> tuple:
         """
         returns player citizenship
         """
-        selector = "#main > main > div:nth-child(8) > div.large-8.columns > div:nth-child(4) > div > div.large-6.large-pull-6.small-12.columns.spielerdatenundfakten > div > span:nth-child(12)"
-        citizenship_element = soup.select_one(selector).text
-        ## TO_DO
-        return citizenship_element
+        citizenship_string = soup.find("span", attrs= {"itemprop": "nationality"}).text.strip()
+        return citizenship_string
+    
+    def get_foot(soup: BeautifulSoup) -> str:
+        """
+        returns foot preference for player
+        """
+        elements = soup.find_all("span", attrs= {"class": "info-table__content info-table__content--bold"})
+        for element in elements:
+            if element.text in ["right", "left", "both"]:
+                foot = element.text
+                break
+        return foot
 
     soup = load_page_soup(player_url)
     player_id = generate_player_id(player_url)
+    player_name = get_player_name(soup)
     date_of_birth = get_dob(soup)
     height = get_height(soup)
     citizenship = get_citizenship(soup)
-    print(player_id, date_of_birth, height, citizenship)
+    foot = get_foot(soup)
+    return (player_id, player_name, date_of_birth, height, citizenship, foot)
     
 def get_players():
-    #players = pd.DataFrame(columns= ["team_id", "team_name", "stadium_name"])
+    players = pd.DataFrame(columns= ["player_id", "player_name", "date_of_birth", "height", "citizenship", "foot"])
     player_urls = read_player_urls()
-    for player_url in player_urls:
+    for player_url in tqdm(player_urls, desc= "Scraping players:"):
         scrape_player_data(player_url)
-        #(team_id, team_name, stadium_name) = scrape_team_data(team_url)
-        #teams.loc[len(teams)] = {"team_id": team_id, "team_name": team_name, "stadium_name": stadium_name}
-    #teams.set_index("team_id", drop= True, inplace= True)
-    #return teams
-    """Player_ID
-    Date_of_birth (timesamp)
-    Height (int)
-    Citizenship (string)
-    foot (enumerate, string"""
+        (player_id, player_name, date_of_birth, height, citizenship, foot) = scrape_player_data(player_url)
+        players.loc[len(players)] = {"player_id": player_id, "player_name": player_name, "date_of_birth": date_of_birth,\
+                                     "height": height, "citizenship": citizenship, "foot": foot}
+    players.set_index("player_id", drop= True, inplace= True)
+    #return players
 
-
-get_players()
+print(get_teams())
+print(get_players())
