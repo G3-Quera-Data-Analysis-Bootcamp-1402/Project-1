@@ -75,7 +75,7 @@ def scrape_team_data(team_url: str) -> tuple:
 def get_teams():
     teams = pd.DataFrame(columns= ["team_id", "team_name", "stadium_name", "in_league_since"])
     team_urls = read_team_urls()
-    for team_url in tqdm(team_urls, desc= "Scraping teams:"):
+    for team_url in tqdm(team_urls, desc= "Scraping teams"):
         (team_id, team_name, stadium_name, in_league_since) = scrape_team_data(team_url)
         teams.loc[len(teams)] = {"team_id": team_id, "team_name": team_name,\
                                  "stadium_name": stadium_name, "in_league_since": in_league_since}
@@ -166,13 +166,12 @@ def scrape_player_data(player_url: str) -> tuple:
 def get_players():
     players = pd.DataFrame(columns= ["player_id", "player_name", "date_of_birth", "height", "citizenship", "foot"])
     player_urls = read_player_urls()
-    for player_url in tqdm(player_urls, desc= "Scraping players:"):
-        scrape_player_data(player_url)
+    for player_url in tqdm(player_urls, desc= "Scraping players"):
         (player_id, player_name, date_of_birth, height, citizenship, foot) = scrape_player_data(player_url)
         players.loc[len(players)] = {"player_id": player_id, "player_name": player_name, "date_of_birth": date_of_birth,\
                                      "height": height, "citizenship": citizenship, "foot": foot}
     players.set_index("player_id", drop= True, inplace= True)
-    #return players
+    return players
 
 print(get_teams())
 print(get_players())
