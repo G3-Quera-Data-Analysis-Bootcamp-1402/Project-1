@@ -145,7 +145,19 @@ def create_tables():
         Column("away_team_goals", Integer),
         Column("home_team_win", Boolean),
         Column("away_team_win", Boolean),
-        Column("draw", Boolean)
+        Column("draw", Boolean),
+        Column("total_shots_home_team", Integer),
+        Column("total_shots_away_team", Integer),
+        Column("shots_on_target_home_team", Integer),
+        Column("shots_on_target_away_team", Integer),
+        Column("corner_home_team", Integer),
+        Column("corner_away_team", Integer),
+        Column("free_kicks_home_team", Integer),
+        Column("free_kicks_away_team", Integer),
+        Column("fouls_home_team", Integer),
+        Column("fouls_away_team", Integer),
+        Column("offsides_home_team", Integer),
+        Column("offsides_away_team", Integer),
     )
     # goals table
     goals = Table(
@@ -180,6 +192,16 @@ def create_tables():
         Column("award_id", Integer, ForeignKey("awards.award_id")),
         Column("season_id", Integer, ForeignKey("seasons.season_id")),
         Column("team_id", Integer, ForeignKey("teams.team_id")),
+    )
+    # penalties table
+    penalties = Table(
+        "penalties",
+        metadata,
+        Column("match_id", Integer, ForeignKey("matches.match_id")),
+        Column("kicker_id", Integer, ForeignKey("players.player_id")),
+        Column("gk_id", Integer, ForeignKey("players.player_id")),
+        Column("missed_penalty", Boolean),
+        Column("scored_penalty", Boolean),
     )
     # create all tables
     metadata.create_all(db_engine)
