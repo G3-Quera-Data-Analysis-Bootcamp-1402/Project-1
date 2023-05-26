@@ -2,8 +2,24 @@ from transfermarkt_analysis.crawl.url_extractors import *
 from pandas import DataFrame, Series
 from tqdm import tqdm
 from datetime import datetime
+from os import getenv
+import dotenv
+from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Enum, ForeignKey, Integer,
+                        MetaData, String, Table, Text, create_engine, text)
+
+dotenv.load_dotenv()
+db_conf = {
+    "user": getenv("DB_USER", "root"),
+    "password": getenv("DB_PASSWORD", ""),
+    "host": getenv("DB_HOST", "localhost"),
+    "port": getenv("DB_PORT", "3306"),
+    "name": getenv("DB_NAME", "transfermarkt"),
+}
+db_url = f"mysql+mysqlconnector://{db_conf['user']}:{db_conf['password']}@{db_conf['host']}:{db_conf['port']}/{db_conf['name']}"
+
 
 store_all_urls()
+
 
 def read_team_urls() -> Series:
     """
@@ -11,11 +27,13 @@ def read_team_urls() -> Series:
     """
     return pd.read_csv(URLS_DIR / "team_urls.csv")["url"]
 
+
 def read_player_urls() -> Series:
     """
     Reads and retrns urls from file: data/player_urls.csv
     """
     return pd.read_csv(URLS_DIR / "player_urls.csv")["url"]
+
 
 def scrape_team_data(team_url: str) -> tuple:
     """
@@ -71,16 +89,6 @@ def scrape_team_data(team_url: str) -> tuple:
     in_league_since = get_in_leauge_since(soup)
     return (team_id, team_name, stadium_name, in_league_since)
     
-
-def get_teams():
-    teams = pd.DataFrame(columns= ["team_id", "team_name", "stadium_name", "in_league_since"])
-    team_urls = read_team_urls()
-    for team_url in tqdm(team_urls, desc= "Scraping teams"):
-        (team_id, team_name, stadium_name, in_league_since) = scrape_team_data(team_url)
-        teams.loc[len(teams)] = {"team_id": team_id, "team_name": team_name,\
-                                 "stadium_name": stadium_name, "in_league_since": in_league_since}
-    teams.set_index("team_id", drop= True, inplace= True)
-    return teams
 
 def scrape_player_data(player_url: str) -> tuple:
     """
@@ -162,8 +170,20 @@ def scrape_player_data(player_url: str) -> tuple:
     citizenship = get_citizenship(soup)
     foot = get_foot(soup)
     return (player_id, player_name, date_of_birth, height, citizenship, foot)
-    
-def get_players():
+
+
+def get_teams_df():
+    teams = pd.DataFrame(columns= ["team_id", "team_name", "stadium_name", "in_league_since"])
+    team_urls = read_team_urls()
+    for team_url in tqdm(team_urls, desc= "Scraping teams"):
+        (team_id, team_name, stadium_name, in_league_since) = scrape_team_data(team_url)
+        teams.loc[len(teams)] = {"team_id": team_id, "team_name": team_name,\
+                                 "stadium_name": stadium_name, "in_league_since": in_league_since}
+    teams.set_index("team_id", drop= True, inplace= True)
+    return teams
+
+
+def get_players_df():
     players = pd.DataFrame(columns= ["player_id", "player_name", "date_of_birth", "height", "citizenship", "foot"])
     player_urls = read_player_urls()
     for player_url in tqdm(player_urls, desc= "Scraping players"):
@@ -173,5 +193,5 @@ def get_players():
     players.set_index("player_id", drop= True, inplace= True)
     return players
 
-print(get_teams())
-print(get_players())
+print(get_teams_df())
+print(get_players_df())
