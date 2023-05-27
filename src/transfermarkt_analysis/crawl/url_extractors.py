@@ -1,7 +1,6 @@
 import os
 
 import pandas as pd
-import requests
 import urllib3
 from bs4 import BeautifulSoup
 
