@@ -1,15 +1,14 @@
 import re
+import threading
 from dataclasses import asdict
-from random import randint
 from time import sleep
-from typing import Any, Dict, List
+from typing import Any, Dict, Iterable, List, Tuple
 
 import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup, Tag
 from mimesis import Generic, Locale
-from tqdm import tqdm
 
 from transfermarkt_analysis.crawl.consts import BASE_URL, DATA_DIR, URLS_DIR
 from transfermarkt_analysis.crawl.structs import (
@@ -158,38 +157,42 @@ def card_extractor(match_id: str, tag: Tag) -> MatchCard:
 
 
 def statistics_extractor(tag: Tag) -> MatchStatistics:
-    url: str = BASE_URL + tag["href"]
-    resp: requests.Response = make_request(url)
-    counter: int = 0
-    
-    while counter <= 5 and resp is None:
-        resp = make_request(url)
-        counter += 1
+        try:
+            url: str = BASE_URL + tag["href"]
+        except TypeError:
+            return MatchStatistics()
+        resp: requests.Response = make_request(url)
+        counter: int = 0
 
-    if resp:
-        if resp.status_code == 200:
-            soup: BeautifulSoup = BeautifulSoup(markup=resp.text, features="html.parser")
-            selectors: Dict[str, Any] = {
-                "home": "div.box div.sb-statistik ul li.sb-statistik-heim div div.sb-statistik-zahl",
-                "away": "div.box div.sb-statistik ul li.sb-statistik-gast div div.sb-statistik-zahl",
-            }
-            return MatchStatistics(
-                home_total_shots=soup.select(selectors["home"])[0].get_text(),
-                away_total_shots=soup.select(selectors["away"])[0].get_text(),
-                home_shots_off_target=soup.select(selectors["home"])[1].get_text(),
-                away_shots_off_target=soup.select(selectors["away"])[1].get_text(),
-                home_shots_saved=soup.select(selectors["home"])[2].get_text(),
-                away_shots_saved=soup.select(selectors["away"])[2].get_text(),
-                home_corners=soup.select(selectors["home"])[3].get_text(),
-                away_corners=soup.select(selectors["away"])[3].get_text(),
-                home_freekicks=soup.select(selectors["home"])[4].get_text(),
-                away_freekicks=soup.select(selectors["away"])[4].get_text(),
-                home_fouls=soup.select(selectors["home"])[5].get_text(),
-                away_fouls=soup.select(selectors["away"])[5].get_text(),
-                home_offsides=soup.select(selectors["home"])[6].get_text(),
-                away_offsides=soup.select(selectors["away"])[6].get_text(),
-            )
-    return MatchStatistics()
+        while counter <= 5 and resp is None:
+            resp = make_request(url)
+            counter += 1
+
+        if resp:
+            if resp.status_code == 200:
+                soup: BeautifulSoup = BeautifulSoup(markup=resp.text, features="html.parser")
+                selectors: Dict[str, Any] = {
+                    "home": "div.box div.sb-statistik ul li.sb-statistik-heim div div.sb-statistik-zahl",
+                    "away": "div.box div.sb-statistik ul li.sb-statistik-gast div div.sb-statistik-zahl",
+                }
+                return MatchStatistics(
+                    home_total_shots=soup.select(selectors["home"])[0].get_text(),
+                    away_total_shots=soup.select(selectors["away"])[0].get_text(),
+                    home_shots_off_target=soup.select(selectors["home"])[1].get_text(),
+                    away_shots_off_target=soup.select(selectors["away"])[1].get_text(),
+                    home_shots_saved=soup.select(selectors["home"])[2].get_text(),
+                    away_shots_saved=soup.select(selectors["away"])[2].get_text(),
+                    home_corners=soup.select(selectors["home"])[3].get_text(),
+                    away_corners=soup.select(selectors["away"])[3].get_text(),
+                    home_freekicks=soup.select(selectors["home"])[4].get_text(),
+                    away_freekicks=soup.select(selectors["away"])[4].get_text(),
+                    home_fouls=soup.select(selectors["home"])[5].get_text(),
+                    away_fouls=soup.select(selectors["away"])[5].get_text(),
+                    home_offsides=soup.select(selectors["home"])[6].get_text(),
+                    away_offsides=soup.select(selectors["away"])[6].get_text(),
+                )
+        else:
+            return MatchStatistics()
 
 
 def match_extractor(resp: requests.Response) -> Match:
@@ -261,35 +264,47 @@ def match_writer(url_id: int, resp: requests.Request, filename: str) -> None:
     match_df.to_csv(DATA_DIR / f"matches/{filename}.csv", mode="a", index=False, header=False)
 
 
-def match_crawl(df: pd.DataFrame, filename: str) -> None:
+def match_crawler(df: pd.DataFrame, filename: str) -> None:
     counter: int = 0
-    for i in tqdm(df.index.values):
-        url_id = i
-        url = df.iloc[url_id]["url"]
-
-        print("getting instead", url)
+    index_list: Iterable = iter(df.index.values.tolist())
+    url_list: Iterable = iter(df["url"].tolist())
+    for url_id, url in zip(index_list, url_list):
+        print(f"getting {url_id} {url}")
 
         resp: requests.Response = make_request(url)
 
         while resp is None or resp.status_code != 200:
-            url_id += 1
-            url = df.iloc[url_id]["url"]
-            print("getting instead", url)
+            url_id = next(index_list)
+            url = next(url_list)
+            print(f"getting instead {url_id} {url}")
             resp = make_request(url)
 
         if resp is not None:
             if resp.status_code == 200:
                 match_writer(url_id, resp, filename)
+                print(f"{resp.status_code} got {url_id} {url}")
                 counter += 1                
-        
-        print("got", url)
-
 
         if counter % 50 == 0:
             counter = 0
             sleep(30)
 
 
-def match_partion_writer(filename: str, start: int, end: int) -> None:
+def match_partion_crawler(filename: str, start: int, end: int) -> None:
     df: pd.DataFrame = pd.read_csv(URLS_DIR / "match_urls.csv").iloc[start:end,]
-    match_crawl(get_matchday_urls_df(df, filename), filename)
+    match_crawler(get_matchday_urls_df(df, filename), filename)
+
+
+def multi_match_partion_crawler(filename: str, start: int, end: int) -> None:
+    limits: List[int] = list(range(start, end + 1, 100))
+    partions: List[Tuple[int, int]] = [(limits[i], limits[i + 1]) for i in range(len(limits) - 1)]
+    threads: List[threading.Thread] = []
+    for partion in partions:
+        thread = threading.Thread(
+            target=match_partion_crawler, args=(filename, partion[0], partion[1])
+        )
+        threads.append(thread)
+        thread.start()
+    
+    for thrd in threads:
+        thrd.join()
