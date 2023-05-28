@@ -1,4 +1,4 @@
-from transfermarkt_analysis.crawl.match_crawler import match_partion_writer
+from transfermarkt_analysis.crawl.match_crawler import multi_match_partion_crawler
 
 
-match_partion_writer("pt2", 2000, 4000)
+multi_match_partion_crawler("pt2", 2000, 4000)
