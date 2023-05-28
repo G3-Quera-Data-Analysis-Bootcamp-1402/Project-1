@@ -1,4 +1,6 @@
+import time
 from transfermarkt_analysis.crawl.url_extractors import *
+import threading
 from urllib3 import Timeout
 from transfermarkt_analysis.db.schema import FootType
 from pandas import DataFrame, Series
@@ -19,7 +21,7 @@ def reset_user_agent():
     module.headers = {
         "User-Agent": provider.internet.user_agent()
     }
-    timeout = Timeout(connect = 5, read = 5)
+    timeout = Timeout(connect = 10, read = 10)
     module.http = urllib3.PoolManager(headers=module.headers, timeout= timeout)
 
 
@@ -187,6 +189,7 @@ def scrape_player_data(player_url: str) -> tuple:
         foot = get_foot(soup)
         return (player_id, player_name, date_of_birth, height, citizenship, foot)
     except:
+        time.sleep(5)
         return scrape_player_data(player_url)
     
 
@@ -389,17 +392,43 @@ def get_transfers_df() -> DataFrame:
 
 def get_players_df():
     reset_user_agent()
-    players = pd.DataFrame(columns= ["player_id", "player_name", "date_of_birth", "height", "citizenship", "foot"])
-    player_urls = read_player_urls()
-    for player_url in tqdm(player_urls, desc= "Scraping players"):
+    lock = threading.Lock()
+    results = []
+    
+    def process_input(player_url: str):
         (player_id, player_name, date_of_birth, height, citizenship, foot) = scrape_player_data(player_url)
+        with lock:
+            results.append((player_id, player_name, date_of_birth, height, citizenship, foot))
+    
+    player_urls = read_player_urls()
+    threads = []
+    for player_url in tqdm(player_urls, desc= "Scraping players"):
+        thread = threading.Thread(target= process_input, args=(player_url,))
+        thread.start()
+        threads.append(thread)
+        if (len(threads) % 20) == 0:
+            for thread in threads:
+                thread.join()
+    
+    players = pd.DataFrame(columns= ["player_id", "player_name", "date_of_birth", "height", "citizenship", "foot"])
+    
+    for result in results:
+        player_id = result[0]
+        player_name = result[1]
+        date_of_birth = result[2]
+        height = result[3]
+        citizenship = result[4]
+        foot = result[5]
         players.loc[len(players)] = {"player_id": player_id, "player_name": player_name, "date_of_birth": date_of_birth,\
                                      "height": height, "citizenship": citizenship, "foot": foot}
+
     players.set_index("player_id", drop= True, inplace= True)
     return players
 
 
+
 def insert_players_into_db(players: DataFrame) -> None:
+    players.to_csv("data/players.csv")
     print(players)
     db_conf, db_url = load_db_config()
     db_engine = create_engine(db_url)
@@ -412,8 +441,7 @@ def insert_players_into_db(players: DataFrame) -> None:
             citizenship = row[4]
             foot = row[5]
             try:
-                if len(connection.execute(text(f"SELECT * FROM player WHERE player_name = '{player_name}'")).fetchall()) == 0:
-                    connection.execute(text(f"INSERT INTO player (player_name,date_of_birth,height,citizenship,foot) VALUES ('{player_name}',{date_of_birth},{height},'{citizenship}',{foot})"))
+                connection.execute(text(f"INSERT INTO player (player_name,date_of_birth,height,citizenship,foot) VALUES ('{player_name}',{date_of_birth},{height},'{citizenship}',{foot})"))
             except:
                 pass
             connection.commit()
@@ -481,4 +509,4 @@ def insert_transfers_into_db(df: DataFrame):
 #insert_leagues_into_db()
 #insert_transfers_into_db(get_transfers_df())
 #insert_teams_into_db(get_teams_df())
-#insert_players_into_db(get_players_df())
+insert_players_into_db(get_players_df())
