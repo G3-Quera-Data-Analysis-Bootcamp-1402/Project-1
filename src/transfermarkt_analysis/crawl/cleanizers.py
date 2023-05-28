@@ -46,7 +46,7 @@ def transfers_cleanizer():
     return df
 
 
-def initialize_cleanized_transfers() -> None:
+def store_cleanized_transfers() -> None:
     df: pd.DataFrame = transfers_cleanizer()
     df = df.dropna().drop_duplicates()
     df.to_csv(CLEANIZED_DIR / "transfers.csv", index=False)
