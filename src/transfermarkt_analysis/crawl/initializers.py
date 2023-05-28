@@ -41,14 +41,14 @@ def fee_cleanizer(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def transfers_cleanizer():
-    df: pd.DataFrame = pd.read_csv(DATA_DIR / "transfers.csv")
+    df: pd.DataFrame = pd.read_csv(DATA_DIR / "transfers.csv", index_col=0)
     df = fee_cleanizer(df)
     return df
 
 
-def store_cleanized_transfers() -> None:
+def initialize_cleanized_transfers() -> None:
     df: pd.DataFrame = transfers_cleanizer()
-    df.to_csv(CLEANIZED_DIR / "transfers.csv")
+    df = df.dropna().drop_duplicates()
+    df.to_csv(CLEANIZED_DIR / "transfers.csv", index=False)
 
-
-store_cleanized_transfers()
+initialize_cleanized_transfers()
