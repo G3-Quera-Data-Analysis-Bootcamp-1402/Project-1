@@ -2,7 +2,7 @@ import re
 from dataclasses import asdict
 from random import randint
 from time import sleep
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Iterable
 
 import numpy as np
 import pandas as pd
@@ -263,27 +263,25 @@ def match_writer(url_id: int, resp: requests.Request, filename: str) -> None:
 
 def match_crawl(df: pd.DataFrame, filename: str) -> None:
     counter: int = 0
-    for i in tqdm(df.index.values):
-        url_id = i
-        url = df.iloc[url_id]["url"]
-
-        print("getting instead", url)
+    index_list: Iterable = iter(df.index.values.tolist())
+    url_list: Iterable = iter(df["url"].tolist())
+    for url_id, url in tqdm(zip(index_list, url_list)):
+        # url_id = i
+        print(f"getting {url_id} {url}")
 
         resp: requests.Response = make_request(url)
 
         while resp is None or resp.status_code != 200:
-            url_id += 1
-            url = df.iloc[url_id]["url"]
-            print("getting instead", url)
+            url_id = next(index_list)
+            url = next(url_list)
+            print(f"getting instead {url_id} {url}")
             resp = make_request(url)
 
         if resp is not None:
             if resp.status_code == 200:
                 match_writer(url_id, resp, filename)
+                print(f"{resp.status_code} got {url_id} {url}")
                 counter += 1                
-        
-        print("got", url)
-
 
         if counter % 50 == 0:
             counter = 0
