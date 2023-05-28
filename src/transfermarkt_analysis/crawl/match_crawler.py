@@ -1,15 +1,14 @@
 import re
+import threading
 from dataclasses import asdict
-from random import randint
 from time import sleep
-from typing import Any, Dict, List, Iterable
+from typing import Any, Dict, Iterable, List, Tuple
 
 import numpy as np
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup, Tag
 from mimesis import Generic, Locale
-from tqdm import tqdm
 
 from transfermarkt_analysis.crawl.consts import BASE_URL, DATA_DIR, URLS_DIR
 from transfermarkt_analysis.crawl.structs import (
@@ -265,12 +264,11 @@ def match_writer(url_id: int, resp: requests.Request, filename: str) -> None:
     match_df.to_csv(DATA_DIR / f"matches/{filename}.csv", mode="a", index=False, header=False)
 
 
-def match_crawl(df: pd.DataFrame, filename: str) -> None:
+def match_crawler(df: pd.DataFrame, filename: str) -> None:
     counter: int = 0
     index_list: Iterable = iter(df.index.values.tolist())
     url_list: Iterable = iter(df["url"].tolist())
-    for url_id, url in tqdm(zip(index_list, url_list)):
-        # url_id = i
+    for url_id, url in zip(index_list, url_list):
         print(f"getting {url_id} {url}")
 
         resp: requests.Response = make_request(url)
@@ -292,6 +290,21 @@ def match_crawl(df: pd.DataFrame, filename: str) -> None:
             sleep(30)
 
 
-def match_partion_writer(filename: str, start: int, end: int) -> None:
+def match_partion_crawler(filename: str, start: int, end: int) -> None:
     df: pd.DataFrame = pd.read_csv(URLS_DIR / "match_urls.csv").iloc[start:end,]
-    match_crawl(get_matchday_urls_df(df, filename), filename)
+    match_crawler(get_matchday_urls_df(df, filename), filename)
+
+
+def multi_match_partion_crawler(filename: str, start: int, end: int) -> None:
+    limits: List[int] = list(range(start, end + 1, 100))
+    partions: List[Tuple[int, int]] = [(limits[i], limits[i + 1]) for i in range(len(limits) - 1)]
+    threads: List[threading.Thread] = []
+    for partion in partions:
+        thread = threading.Thread(
+            target=match_partion_crawler, args=(filename, partion[0], partion[1])
+        )
+        threads.append(thread)
+        thread.start()
+    
+    for thrd in threads:
+        thrd.join()
