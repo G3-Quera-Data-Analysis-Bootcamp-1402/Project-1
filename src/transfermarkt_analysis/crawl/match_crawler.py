@@ -158,7 +158,7 @@ def card_extractor(match_id: str, tag: Tag) -> MatchCard:
 
 
 def statistics_extractor(tag: Tag) -> MatchStatistics:
-    try:
+    if tag is not None:
         url: str = BASE_URL + tag["href"]
         resp: requests.Response = make_request(url)
         counter: int = 0
@@ -190,7 +190,7 @@ def statistics_extractor(tag: Tag) -> MatchStatistics:
                     home_offsides=soup.select(selectors["home"])[6].get_text(),
                     away_offsides=soup.select(selectors["away"])[6].get_text(),
                 )
-    except Exception:
+    else:
         return MatchStatistics()
 
 
