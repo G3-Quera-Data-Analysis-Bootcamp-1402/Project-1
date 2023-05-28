@@ -301,8 +301,8 @@ def match_partion_crawler(filename: str, start: int, end: int) -> None:
     match_crawler(get_matchday_urls_df(df, filename), filename)
 
 
-def multi_match_partion_crawler(filename: str, start: int, end: int) -> None:
-    limits: List[int] = list(range(start, end + 1, 100))
+def multi_match_partion_crawler(filename: str, start: int, end: int, step: int = 100) -> None:
+    limits: List[int] = list(range(start, end + 1, step))
     partions: List[Tuple[int, int]] = [(limits[i], limits[i + 1]) for i in range(len(limits) - 1)]
     threads: List[threading.Thread] = []
     for partion in partions:
