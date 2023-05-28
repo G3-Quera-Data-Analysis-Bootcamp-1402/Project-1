@@ -50,5 +50,3 @@ def initialize_cleanized_transfers() -> None:
     df: pd.DataFrame = transfers_cleanizer()
     df = df.dropna().drop_duplicates()
     df.to_csv(CLEANIZED_DIR / "transfers.csv", index=False)
-
-initialize_cleanized_transfers()
