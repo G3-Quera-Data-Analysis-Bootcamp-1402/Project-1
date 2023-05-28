@@ -158,38 +158,40 @@ def card_extractor(match_id: str, tag: Tag) -> MatchCard:
 
 
 def statistics_extractor(tag: Tag) -> MatchStatistics:
-    url: str = BASE_URL + tag["href"]
-    resp: requests.Response = make_request(url)
-    counter: int = 0
-    
-    while counter <= 5 and resp is None:
-        resp = make_request(url)
-        counter += 1
+    try:
+        url: str = BASE_URL + tag["href"]
+        resp: requests.Response = make_request(url)
+        counter: int = 0
 
-    if resp:
-        if resp.status_code == 200:
-            soup: BeautifulSoup = BeautifulSoup(markup=resp.text, features="html.parser")
-            selectors: Dict[str, Any] = {
-                "home": "div.box div.sb-statistik ul li.sb-statistik-heim div div.sb-statistik-zahl",
-                "away": "div.box div.sb-statistik ul li.sb-statistik-gast div div.sb-statistik-zahl",
-            }
-            return MatchStatistics(
-                home_total_shots=soup.select(selectors["home"])[0].get_text(),
-                away_total_shots=soup.select(selectors["away"])[0].get_text(),
-                home_shots_off_target=soup.select(selectors["home"])[1].get_text(),
-                away_shots_off_target=soup.select(selectors["away"])[1].get_text(),
-                home_shots_saved=soup.select(selectors["home"])[2].get_text(),
-                away_shots_saved=soup.select(selectors["away"])[2].get_text(),
-                home_corners=soup.select(selectors["home"])[3].get_text(),
-                away_corners=soup.select(selectors["away"])[3].get_text(),
-                home_freekicks=soup.select(selectors["home"])[4].get_text(),
-                away_freekicks=soup.select(selectors["away"])[4].get_text(),
-                home_fouls=soup.select(selectors["home"])[5].get_text(),
-                away_fouls=soup.select(selectors["away"])[5].get_text(),
-                home_offsides=soup.select(selectors["home"])[6].get_text(),
-                away_offsides=soup.select(selectors["away"])[6].get_text(),
-            )
-    return MatchStatistics()
+        while counter <= 5 and resp is None:
+            resp = make_request(url)
+            counter += 1
+
+        if resp:
+            if resp.status_code == 200:
+                soup: BeautifulSoup = BeautifulSoup(markup=resp.text, features="html.parser")
+                selectors: Dict[str, Any] = {
+                    "home": "div.box div.sb-statistik ul li.sb-statistik-heim div div.sb-statistik-zahl",
+                    "away": "div.box div.sb-statistik ul li.sb-statistik-gast div div.sb-statistik-zahl",
+                }
+                return MatchStatistics(
+                    home_total_shots=soup.select(selectors["home"])[0].get_text(),
+                    away_total_shots=soup.select(selectors["away"])[0].get_text(),
+                    home_shots_off_target=soup.select(selectors["home"])[1].get_text(),
+                    away_shots_off_target=soup.select(selectors["away"])[1].get_text(),
+                    home_shots_saved=soup.select(selectors["home"])[2].get_text(),
+                    away_shots_saved=soup.select(selectors["away"])[2].get_text(),
+                    home_corners=soup.select(selectors["home"])[3].get_text(),
+                    away_corners=soup.select(selectors["away"])[3].get_text(),
+                    home_freekicks=soup.select(selectors["home"])[4].get_text(),
+                    away_freekicks=soup.select(selectors["away"])[4].get_text(),
+                    home_fouls=soup.select(selectors["home"])[5].get_text(),
+                    away_fouls=soup.select(selectors["away"])[5].get_text(),
+                    home_offsides=soup.select(selectors["home"])[6].get_text(),
+                    away_offsides=soup.select(selectors["away"])[6].get_text(),
+                )
+    except Exception:
+        return MatchStatistics()
 
 
 def match_extractor(resp: requests.Response) -> Match:
