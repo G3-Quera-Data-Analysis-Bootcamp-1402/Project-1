@@ -50,19 +50,19 @@ def obj_id(url: str) -> str:
 
 def result_validator(tag: Tag) -> str:
     pattern: str = r"\d+\:\d+"
-    mtch: str = re.search(pattern, tag.get_text()).group()
+    mtch: str = re.findall(pattern, tag.get_text())[0]
     return mtch
 
 
 def matchday_validator(tag: Tag) -> str:
     pattern: str = r"\d+"
-    mtch: str = re.search(pattern, tag.get_text()).group()
+    mtch: str = re.findall(pattern, tag.get_text())[0]
     return mtch
 
 
 def match_date_validator(tag: Tag) -> str:
     pattern: str = r"\d+\.\d+\.\d+"
-    mtch: str = re.search(pattern, tag.get_text()).group()
+    mtch: str = re.findall(pattern, tag.get_text())[0]
     return mtch
 
 
