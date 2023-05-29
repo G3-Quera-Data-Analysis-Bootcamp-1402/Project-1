@@ -50,20 +50,26 @@ def obj_id(url: str) -> str:
 
 def result_validator(tag: Tag) -> str:
     pattern: str = r"\d+\:\d+"
-    mtch: str = re.search(pattern, tag.get_text()).group()
-    return mtch
+    mtch: str = re.findall(pattern, tag.get_text())
+    if len(mtch) > 0:
+        return mtch[0]
+    return ""
 
 
 def matchday_validator(tag: Tag) -> str:
     pattern: str = r"\d+"
-    mtch: str = re.search(pattern, tag.get_text()).group()
-    return mtch
+    mtch: str = re.findall(pattern, tag.get_text())
+    if len(mtch) > 0:
+        return mtch[0]
+    return ""
 
 
 def match_date_validator(tag: Tag) -> str:
     pattern: str = r"\d+\.\d+\.\d+"
-    mtch: str = re.search(pattern, tag.get_text()).group()
-    return mtch
+    mtch: str = re.findall(pattern, tag.get_text())
+    if len(mtch) > 0:
+        return mtch[0]
+    return ""
 
 
 def goal_type_validator(tag: Tag) -> str:
@@ -295,8 +301,8 @@ def match_partion_crawler(filename: str, start: int, end: int) -> None:
     match_crawler(get_matchday_urls_df(df, filename), filename)
 
 
-def multi_match_partion_crawler(filename: str, start: int, end: int) -> None:
-    limits: List[int] = list(range(start, end + 1, 100))
+def multi_match_partion_crawler(filename: str, start: int, end: int, step: int = 100) -> None:
+    limits: List[int] = list(range(start, end + 1, step))
     partions: List[Tuple[int, int]] = [(limits[i], limits[i + 1]) for i in range(len(limits) - 1)]
     threads: List[threading.Thread] = []
     for partion in partions:

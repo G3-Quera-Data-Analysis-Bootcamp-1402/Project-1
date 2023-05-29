@@ -13,8 +13,8 @@ urllib3==2.0.2
 jupyter==1.0.0
 jupyterlab==3.5.1
 flaml==1.0.14
-xgboost==1.7.2
 scikit-learn==1.2.0
+numpy==1.23.5
 pandas==2.0.1
 matplotlib==3.6.2
 seaborn==0.12.1
