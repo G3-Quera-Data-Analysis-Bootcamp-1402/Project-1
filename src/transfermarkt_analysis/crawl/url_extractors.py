@@ -7,8 +7,20 @@ from bs4 import BeautifulSoup
 from transfermarkt_analysis.consts import (BASE_URL, HEADERS,
                                                  LEAGUE_MATCHDAY_URLS,
                                                  LEAGUE_TRANSFERS_URLS,
-                                                 MATHDAY_RANGE, SEASONS_RANGE,
+                                                 MATCHDAY_RANGE, SEASONS_RANGE,
                                                  URLS_DIR)
+
+
+__all__ = [
+    "player_urls_extractor",
+    "team_urls_extractor",
+    "matchday_urls_extractor",
+    "store_player_urls",
+    "store_team_urls",
+    "store_matchday_urls",
+    "store_all_urls"
+]
+
 
 http = urllib3.PoolManager(headers=HEADERS)
 

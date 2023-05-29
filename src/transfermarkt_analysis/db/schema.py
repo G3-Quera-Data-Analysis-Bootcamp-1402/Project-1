@@ -9,7 +9,8 @@ from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Enum, ForeignKey, Inte
 
 __all__ = [
     "db_url",
-    "create_tables"
+    "FootType",
+    "create_tables",
 ]
 
 

@@ -23,6 +23,32 @@ from transfermarkt_analysis.crawl.structs import (
 )
 
 
+__all__ = [
+    "get_headers",
+    "make_request",
+    "obj_id",
+    "result_validator",
+    "matchday_validator",
+    "match_date_validator",
+    "goal_type_validator",
+    "goal_extractor",
+    "substitute_extractor",
+    "card_extractor",
+    "match_extractor",
+    "get_matchday_urls_df",
+    "match_writer",
+    "match_crawler",
+    "match_partion_crawler",
+    "multi_match_partion_crawler",
+    "match_penalties_extractor",
+    "match_players_extractor",
+    "match_players_writer",
+    "match_players_crawler",
+    "match_players_partion_crawler",
+    "multi_match_players_partion_crawler"
+]
+
+
 provider: Generic = Generic(locale=Locale.EN)
 
 
@@ -81,7 +107,7 @@ def goal_type_validator(tag: Tag) -> str:
     return mtchs[2].strip()
 
 
-def goals_extractor(match_id: str, tag: Tag) -> MatchGoal:
+def goal_extractor(match_id: str, tag: Tag) -> MatchGoal:
     selectors: Dict[str, str] = {
         "scorrer": "div.sb-aktion div.sb-aktion-aktion a.wichtig",
         "assist": "div.sb-aktion div.sb-aktion-aktion a.wichtig",
@@ -105,7 +131,7 @@ def goals_extractor(match_id: str, tag: Tag) -> MatchGoal:
     )
 
 
-def subtitate_extractor(match_id: str, tag: Tag) -> MatchSubstitute:
+def substitute_extractor(match_id: str, tag: Tag) -> MatchSubstitute:
     selectors: Dict[str, str] = {
         "player_in": "div.sb-aktion div.sb-aktion-aktion span.sb-aktion-wechsel-ein a.wichtig",
         "player_out": "div.sb-aktion div.sb-aktion-aktion span.sb-aktion-wechsel-aus a.wichtig",
@@ -235,19 +261,19 @@ def match_extractor(resp: requests.Response) -> Match:
         matchday=matchday_validator(soup.select_one(selectors["matchday"])),
         match_date=match_date_validator(soup.select_one(selectors["match_date"])),
         home_goals=[
-            goals_extractor(match_id, tag)
+            goal_extractor(match_id, tag)
             for tag in soup.select(selectors["home_goals"])
         ],
         away_goals=[
-            goals_extractor(match_id, tag)
+            goal_extractor(match_id, tag)
             for tag in soup.select(selectors["away_goals"])
         ],
         home_substitutions=[
-            subtitate_extractor(match_id, tag)
+            substitute_extractor(match_id, tag)
             for tag in soup.select(selectors["home_substitutions"])
         ],
         away_substitutions=[
-            subtitate_extractor(match_id, tag)
+            substitute_extractor(match_id, tag)
             for tag in soup.select(selectors["away_substitutions"])
         ],
         home_cards=[

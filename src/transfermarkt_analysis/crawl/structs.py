@@ -3,6 +3,17 @@ from dataclasses import dataclass, field
 from typing import List
 
 
+__all__ = [
+    "MatchGoal",
+    "MatchSubstitute",
+    "MatchCard",
+    "Match",
+    "MatchPenalty",
+    "MatchPlayer",
+    "MatchPlayersPenalties"
+]
+
+
 @dataclass
 class MatchGoal:
     match_id: str = None

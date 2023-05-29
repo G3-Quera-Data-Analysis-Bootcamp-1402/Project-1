@@ -1,5 +1,18 @@
 import pathlib
 
+
+__all__ = [
+    "BASE_URL",
+    "LEAGUE_TRANSFERS_URLS",
+    "LEAGUE_MATCHDAY_URLS",
+    "HEADERS",
+    "SEASONS_RANGE",
+    "MATCHDAY_RANGE",
+    "DATA_DIR",
+    "URLS_DIR"
+]
+
+
 BASE_URL = "https://transfermarkt.de"
 
 LEAGUE_TRANSFERS_URLS = {
@@ -24,7 +37,7 @@ HEADERS = {
 
 SEASONS_RANGE = range(2015, 2022)
 
-MATHDAY_RANGE = range(1, 39)
+MATCHDAY_RANGE = range(1, 39)
 
 # for get easy access to data/urls directory and by adding / you can add path
 # example for accessing to player_urls.csv URLS_DIR / "player_urls.csv" -> data/urls/player_urls.csv
