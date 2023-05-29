@@ -1,7 +1,7 @@
 import ast
 import os
 import re
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 import numpy as np
 import pandas as pd
@@ -61,8 +61,9 @@ def matches_df_concatenator() -> pd.DataFrame:
     df: pd.DataFrame = pd.DataFrame()
     MATCHES_DATA_DIR = DATA_DIR / "matches"
     for pt_csv in os.listdir(MATCHES_DATA_DIR):
-        pt_df: pd.DataFrame = pd.read_csv(MATCHES_DATA_DIR / pt_csv)
-        df = pd.concat([df, pt_df])
+        if "pt" in pt_csv:
+            pt_df: pd.DataFrame = pd.read_csv(MATCHES_DATA_DIR / pt_csv)
+            df = pd.concat([df, pt_df])
     df = df.drop_duplicates().dropna()
     return df
 
@@ -96,20 +97,28 @@ def statistics_df_cleanizer(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(data)
 
 
-def matches_df_cleanizer() -> Dict[str, pd.DataFrame]:
-    concated_matches_df: pd.DataFrame = matches_df_concatenator()
-    list_dfs: Dict[str, pd.DataFrame] = {
-        "home_goals": list_df_cleanizer(concated_matches_df, "home_goals"),
-        "away_goals": list_df_cleanizer(concated_matches_df, "home_goals"),
-        "home_substitutions": list_df_cleanizer(
-            concated_matches_df, "home_substitutions"
-        ),
-        "away_substitutions": list_df_cleanizer(
-            concated_matches_df, "home_substitutions"
-        ),
-        "home_cards": list_df_cleanizer(concated_matches_df, "home_cards"),
-        "away_cards": list_df_cleanizer(concated_matches_df, "home_cards"),
-    }
+def result_df_cleanizer(df: pd.DataFrame) -> pd.DataFrame:
+    def home_score(result: str) -> int:
+        return int(result[: result.index(":")])
+
+    def away_score(result: str) -> int:
+        return int(result[result.index(":") + 1 :])
+
+    data: List[Dict[str, Any]] = [
+        {
+            "home_team_score": home_score(result),
+            "away_team_score": away_score(result),
+            "home_team_win": 1 if home_score(result) > away_score(result) else 0,
+            "away_team_win": 1 if home_score(result) < away_score(result) else 0,
+            "draw": 1 if home_score(result) == away_score(result) else 0,
+        }
+        for result in df.loc[:, "result"]
+    ]
+
+    return pd.DataFrame(data)
+
+
+def matches_df_cleanizer(df: pd.DataFrame) -> pd.DataFrame:
     removed_columns: List[str] = [
         "url_id",
         "home_goals",
@@ -119,15 +128,31 @@ def matches_df_cleanizer() -> Dict[str, pd.DataFrame]:
         "home_cards",
         "away_cards",
     ]
-    matches_df: pd.DataFrame = concated_matches_df.loc[
-        :, ~concated_matches_df.columns.isin(removed_columns)
-    ]
+    matches_df: pd.DataFrame = df.loc[:, ~df.columns.isin(removed_columns)]
     statistics_df: pd.DataFrame = statistics_df_cleanizer(matches_df).reset_index(drop=True)
-    matches_df = matches_df.reset_index(drop=True).loc[
-        :, ~matches_df.columns.isin(["statistics"])
-    ]
+    result_df: pd.DataFrame = result_df_cleanizer(matches_df).reset_index(drop=True)
+    matches_df = matches_df.loc[
+        :, ~matches_df.columns.isin(["result", "statistics"])
+    ].reset_index(drop=True)
+    return pd.concat([matches_df, statistics_df, result_df], axis=1)
+
+
+def matches_related_df_cleanizer() -> Dict[str, pd.DataFrame]:
+    concated_matches_df: pd.DataFrame = matches_df_concatenator()
+    list_dfs: Dict[str, pd.DataFrame] = {
+        "home_goals": list_df_cleanizer(concated_matches_df, "home_goals"),
+        "away_goals": list_df_cleanizer(concated_matches_df, "away_goals"),
+        "home_substitutions": list_df_cleanizer(
+            concated_matches_df, "home_substitutions"
+        ),
+        "away_substitutions": list_df_cleanizer(
+            concated_matches_df, "away_substitutions"
+        ),
+        "home_cards": list_df_cleanizer(concated_matches_df, "home_cards"),
+        "away_cards": list_df_cleanizer(concated_matches_df, "away_cards"),
+    }
     return {
-        "matches_df": pd.concat([matches_df, statistics_df], axis=1),
+        "matches_df": matches_df_cleanizer(concated_matches_df),
         "goals_df": pd.concat([list_dfs["home_goals"], list_dfs["away_goals"]]),
         "substitutions_df": pd.concat(
             [list_dfs["home_substitutions"], list_dfs["away_substitutions"]]
@@ -137,7 +162,7 @@ def matches_df_cleanizer() -> Dict[str, pd.DataFrame]:
 
 
 def store_cleanized_matches_dfs() -> None:
-    dfs: Dict[str, pd.DataFrame] = matches_df_cleanizer()
+    dfs: Dict[str, pd.DataFrame] = matches_related_df_cleanizer()
     dfs["matches_df"].to_csv(CLEANIZED_DIR / "matches.csv", index=False)
     dfs["goals_df"].to_csv(CLEANIZED_DIR / "goals.csv", index=False)
     dfs["substitutions_df"].to_csv(CLEANIZED_DIR / "substitutions.csv", index=False)
