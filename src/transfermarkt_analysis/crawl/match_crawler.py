@@ -17,6 +17,9 @@ from transfermarkt_analysis.crawl.structs import (
     MatchCard,
     MatchStatistics,
     Match,
+    MatchPlayer,
+    MatchPenalty,
+    MatchPlayersPenalties,
 )
 
 
@@ -163,42 +166,44 @@ def card_extractor(match_id: str, tag: Tag) -> MatchCard:
 
 
 def statistics_extractor(tag: Tag) -> MatchStatistics:
-        try:
-            url: str = BASE_URL + tag["href"]
-        except TypeError:
-            return MatchStatistics()
-        resp: requests.Response = make_request(url)
-        counter: int = 0
+    try:
+        url: str = BASE_URL + tag["href"]
+    except TypeError:
+        return MatchStatistics()
+    resp: requests.Response = make_request(url)
+    counter: int = 0
 
-        while counter <= 5 and resp is None:
-            resp = make_request(url)
-            counter += 1
+    while counter <= 5 and resp is None:
+        resp = make_request(url)
+        counter += 1
 
-        if resp:
-            if resp.status_code == 200:
-                soup: BeautifulSoup = BeautifulSoup(markup=resp.text, features="html.parser")
-                selectors: Dict[str, Any] = {
-                    "home": "div.box div.sb-statistik ul li.sb-statistik-heim div div.sb-statistik-zahl",
-                    "away": "div.box div.sb-statistik ul li.sb-statistik-gast div div.sb-statistik-zahl",
-                }
-                return MatchStatistics(
-                    home_total_shots=soup.select(selectors["home"])[0].get_text(),
-                    away_total_shots=soup.select(selectors["away"])[0].get_text(),
-                    home_shots_off_target=soup.select(selectors["home"])[1].get_text(),
-                    away_shots_off_target=soup.select(selectors["away"])[1].get_text(),
-                    home_shots_saved=soup.select(selectors["home"])[2].get_text(),
-                    away_shots_saved=soup.select(selectors["away"])[2].get_text(),
-                    home_corners=soup.select(selectors["home"])[3].get_text(),
-                    away_corners=soup.select(selectors["away"])[3].get_text(),
-                    home_freekicks=soup.select(selectors["home"])[4].get_text(),
-                    away_freekicks=soup.select(selectors["away"])[4].get_text(),
-                    home_fouls=soup.select(selectors["home"])[5].get_text(),
-                    away_fouls=soup.select(selectors["away"])[5].get_text(),
-                    home_offsides=soup.select(selectors["home"])[6].get_text(),
-                    away_offsides=soup.select(selectors["away"])[6].get_text(),
-                )
-        else:
-            return MatchStatistics()
+    if resp:
+        if resp.status_code == 200:
+            soup: BeautifulSoup = BeautifulSoup(
+                markup=resp.text, features="html.parser"
+            )
+            selectors: Dict[str, Any] = {
+                "home": "div.box div.sb-statistik ul li.sb-statistik-heim div div.sb-statistik-zahl",
+                "away": "div.box div.sb-statistik ul li.sb-statistik-gast div div.sb-statistik-zahl",
+            }
+            return MatchStatistics(
+                home_total_shots=soup.select(selectors["home"])[0].get_text(),
+                away_total_shots=soup.select(selectors["away"])[0].get_text(),
+                home_shots_off_target=soup.select(selectors["home"])[1].get_text(),
+                away_shots_off_target=soup.select(selectors["away"])[1].get_text(),
+                home_shots_saved=soup.select(selectors["home"])[2].get_text(),
+                away_shots_saved=soup.select(selectors["away"])[2].get_text(),
+                home_corners=soup.select(selectors["home"])[3].get_text(),
+                away_corners=soup.select(selectors["away"])[3].get_text(),
+                home_freekicks=soup.select(selectors["home"])[4].get_text(),
+                away_freekicks=soup.select(selectors["away"])[4].get_text(),
+                home_fouls=soup.select(selectors["home"])[5].get_text(),
+                away_fouls=soup.select(selectors["away"])[5].get_text(),
+                home_offsides=soup.select(selectors["home"])[6].get_text(),
+                away_offsides=soup.select(selectors["away"])[6].get_text(),
+            )
+    else:
+        return MatchStatistics()
 
 
 def match_extractor(resp: requests.Response) -> Match:
@@ -230,10 +235,12 @@ def match_extractor(resp: requests.Response) -> Match:
         matchday=matchday_validator(soup.select_one(selectors["matchday"])),
         match_date=match_date_validator(soup.select_one(selectors["match_date"])),
         home_goals=[
-            goals_extractor(match_id, tag) for tag in soup.select(selectors["home_goals"])
+            goals_extractor(match_id, tag)
+            for tag in soup.select(selectors["home_goals"])
         ],
         away_goals=[
-            goals_extractor(match_id, tag) for tag in soup.select(selectors["away_goals"])
+            goals_extractor(match_id, tag)
+            for tag in soup.select(selectors["away_goals"])
         ],
         home_substitutions=[
             subtitate_extractor(match_id, tag)
@@ -244,10 +251,12 @@ def match_extractor(resp: requests.Response) -> Match:
             for tag in soup.select(selectors["away_substitutions"])
         ],
         home_cards=[
-            card_extractor(match_id, tag) for tag in soup.select(selectors["home_cards"])
+            card_extractor(match_id, tag)
+            for tag in soup.select(selectors["home_cards"])
         ],
         away_cards=[
-            card_extractor(match_id, tag) for tag in soup.select(selectors["away_cards"])
+            card_extractor(match_id, tag)
+            for tag in soup.select(selectors["away_cards"])
         ],
         statistics=statistics_extractor(
             soup.select_one(selectors["statistics"], href=True)
@@ -267,7 +276,9 @@ def match_writer(url_id: int, resp: requests.Request, filename: str) -> None:
             match_data,
         ]
     )
-    match_df.to_csv(DATA_DIR / f"matches/{filename}.csv", mode="a", index=False, header=False)
+    match_df.to_csv(
+        DATA_DIR / f"matches/{filename}.csv", mode="a", index=False, header=False
+    )
 
 
 def match_crawler(df: pd.DataFrame, filename: str) -> None:
@@ -289,7 +300,7 @@ def match_crawler(df: pd.DataFrame, filename: str) -> None:
             if resp.status_code == 200:
                 match_writer(url_id, resp, filename)
                 print(f"{resp.status_code} got {url_id} {url}")
-                counter += 1                
+                counter += 1
 
         if counter % 50 == 0:
             counter = 0
@@ -301,9 +312,13 @@ def match_partion_crawler(filename: str, start: int, end: int) -> None:
     match_crawler(get_matchday_urls_df(df, filename), filename)
 
 
-def multi_match_partion_crawler(filename: str, start: int, end: int, step: int = 100) -> None:
+def multi_match_partion_crawler(
+    filename: str, start: int, end: int, step: int = 100
+) -> None:
     limits: List[int] = list(range(start, end + 1, step))
-    partions: List[Tuple[int, int]] = [(limits[i], limits[i + 1]) for i in range(len(limits) - 1)]
+    partions: List[Tuple[int, int]] = [
+        (limits[i], limits[i + 1]) for i in range(len(limits) - 1)
+    ]
     threads: List[threading.Thread] = []
     for partion in partions:
         thread = threading.Thread(
@@ -311,6 +326,155 @@ def multi_match_partion_crawler(filename: str, start: int, end: int, step: int =
         )
         threads.append(thread)
         thread.start()
-    
+
+    for thrd in threads:
+        thrd.join()
+
+
+def match_penalties_extractor(match_id: str, team_id: str, tag: Tag) -> MatchPenalty:
+    selectors: Dict[str, str] = {
+        "goal_keeper": "div.sb-aktion div.sb-aktion-aktion span.sb-aktion-wechsel-aus a.wichtig",
+        "kicker": "div.sb-aktion div.sb-aktion-aktion span.sb-aktion-wechsel-ein a.wichtig",
+    }
+
+    goal_keeper: Tag = tag.select_one(selectors["goal_keeper"], href=True)
+    kicker: Tag = tag.select_one(selectors["kicker"], href=True)
+
+    try:
+        goal_keeper_id = obj_id(goal_keeper["href"])
+        kicker_id = obj_id(kicker["href"])
+    except Exception:
+        return MatchPenalty()
+
+    return MatchPenalty(
+        match_id=match_id,
+        team_id=team_id,
+        kicker_id=kicker_id,
+        gk_id=goal_keeper_id,
+        kicker=kicker.get_text(),
+        gk=goal_keeper.get_text(),
+    )
+
+
+def match_players_extractor(resp: requests.Response) -> MatchPlayersPenalties:
+    soup: BeautifulSoup = BeautifulSoup(markup=resp.text, features="html.parser")
+    match_id: str = obj_id(resp.url)
+    selectors: Dict[str, str] = {
+        "home_team": "div.box.sb-spielbericht-head div.box-content div.sb-team.sb-heim a.sb-vereinslink",
+        "away_team": "div.box.sb-spielbericht-head div.box-content div.sb-team.sb-gast a.sb-vereinslink",
+        "home_players": "div.large-6:nth-child(2) div.large-7.columns.small-12.aufstellung-vereinsseite div div.aufstellung-spieler-container div span.aufstellung-rueckennummer-name a",
+        "away_players": "div.large-6:nth-child(3) div.large-7.columns.small-12.aufstellung-vereinsseite div div.aufstellung-spieler-container div span.aufstellung-rueckennummer-name > a",
+        "home_penalties": "div.box div#sb-verschossene.sb-ereignisse ul li.sb-aktion-heim",
+        "away_penalties": "div.box div#sb-verschossene.sb-ereignisse ul li.sb-aktion-gast",
+    }
+
+    home_team: Tag = soup.select_one(selectors["home_team"], href=True)
+    away_team: Tag = soup.select_one(selectors["away_team"], href=True)
+    home_team_id: str = None
+    away_team_id: str = None
+
+    try:
+        home_team_id = obj_id(home_team["href"])
+        away_team_id = obj_id(away_team["href"])
+    except Exception:
+        pass
+
+    home_players: List[MatchPlayer] = [
+        MatchPlayer(
+            match_id=match_id,
+            team_id=home_team_id,
+            player_id=obj_id(player["href"]),
+            player=player.get_text(),
+        )
+        for player in soup.select(selectors["home_players"], href=True)
+    ]
+    away_players: List[MatchPlayer] = [
+        MatchPlayer(
+            match_id=match_id,
+            team_id=away_team_id,
+            player_id=obj_id(player["href"]),
+            player=player.get_text(),
+        )
+        for player in soup.select(selectors["away_players"], href=True)
+    ]
+    players: List[MatchPlayer] = home_players + away_players
+
+    home_penalties: List[MatchPenalty] = [
+        match_penalties_extractor(match_id, home_team_id, tag)
+        for tag in soup.select(selectors["home_penalties"])
+    ]
+    away_penalties: List[MatchPenalty] = [
+        match_penalties_extractor(match_id, home_team_id, tag)
+        for tag in soup.select(selectors["away_penalties"])
+    ]
+    penalties: List[MatchPenalty] = home_penalties + away_penalties
+
+    return MatchPlayersPenalties(
+        match_id=match_id, players=players, penalties=penalties
+    )
+
+
+def match_players_writer(url_id: int, resp: requests.Response, filename: str):
+    match_players_data: Dict[str, Any] = {
+        "url_id": url_id,
+        **asdict(match_players_extractor(resp)),
+    }
+    match_players_df: pd.DataFrame = pd.DataFrame(
+        [
+            match_players_data,
+        ]
+    )
+    match_players_df.to_csv(
+        DATA_DIR / f"matches/{filename}.csv", mode="a", index=False, header=False
+    )
+
+
+def match_players_crawler(df: pd.DataFrame, filename: str):
+    counter: int = 0
+    index_list: Iterable = iter(df.index.values.tolist())
+    url_list: Iterable = iter(df["url"].tolist())
+    for url_id, url in zip(index_list, url_list):
+        print(f"getting {url_id} {url}")
+
+        resp: requests.Response = make_request(url)
+
+        while resp is None or resp.status_code != 200:
+            url_id = next(index_list)
+            url = next(url_list)
+            print(f"getting instead {url_id} {url}")
+            resp = make_request(url)
+
+        if resp is not None:
+            if resp.status_code == 200:
+                match_players_writer(url_id, resp, filename)
+                print(f"{resp.status_code} got {url_id} {url}")
+                counter += 1
+
+        if counter % 50 == 0:
+            counter = 0
+            sleep(30)
+
+
+def match_players_partion_crawler(filename: str, start: int, end: int) -> None:
+    df: pd.DataFrame = pd.read_csv(URLS_DIR / "match_urls.csv").iloc[start:end,]
+    match_players_crawler(get_matchday_urls_df(df, filename), filename)
+
+
+def multi_match_players_partion_crawler(
+    filename: str, start: int, end: int, step: int = 100
+) -> None:
+    limits: List[int] = list(range(start, end + 1, step))
+    partions: List[Tuple[int, int]] = [
+        (limits[i], limits[i + 1]) for i in range(len(limits) - 1)
+    ]
+    threads: List[threading.Thread] = []
+    for partion in partions:
+        thread = threading.Thread(
+            target=match_players_partion_crawler,
+            args=(filename, partion[0], partion[1]),
+        )
+        threads.append(thread)
+        thread.start()
+
     for thrd in threads:
         thrd.join()
