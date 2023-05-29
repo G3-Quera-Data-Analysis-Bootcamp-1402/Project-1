@@ -21,8 +21,4 @@ seaborn==0.12.1
 pickle-mixin==1.0.2
 joblib==1.2.0
 mimesis==10.0.0
-<<<<<<< HEAD
 python-dotenv==1.0.0
-=======
-xgboost==1.7.2
->>>>>>> 4f9dd11a9c005e1890c8676a8935cff9496865d6
