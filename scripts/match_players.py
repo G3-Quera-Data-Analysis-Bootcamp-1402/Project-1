@@ -1,5 +1,5 @@
 from time import sleep
-from transfermarkt_analysis.crawl.match_crawler import multi_match_players_partion_crawler
+from transfermarkt_analysis.crawl.crawlers.match_crawler import multi_match_players_partion_crawler
 
 
 multi_match_players_partion_crawler("player_appearances", 0, 2000, 100)
