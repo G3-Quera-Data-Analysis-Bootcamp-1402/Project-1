@@ -4,7 +4,7 @@ import pandas as pd
 import urllib3
 from bs4 import BeautifulSoup
 
-from transfermarkt_analysis.crawl.consts import (BASE_URL, HEADERS,
+from transfermarkt_analysis.consts import (BASE_URL, HEADERS,
                                                  LEAGUE_MATCHDAY_URLS,
                                                  LEAGUE_TRANSFERS_URLS,
                                                  MATHDAY_RANGE, SEASONS_RANGE,

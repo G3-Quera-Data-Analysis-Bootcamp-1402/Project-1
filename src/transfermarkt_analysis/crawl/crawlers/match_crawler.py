@@ -10,7 +10,7 @@ import requests
 from bs4 import BeautifulSoup, Tag
 from mimesis import Generic, Locale
 
-from transfermarkt_analysis.crawl.consts import BASE_URL, DATA_DIR, URLS_DIR
+from transfermarkt_analysis.consts import BASE_URL, DATA_DIR, URLS_DIR
 from transfermarkt_analysis.crawl.structs import (
     MatchGoal,
     MatchSubstitute,
