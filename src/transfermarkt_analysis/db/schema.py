@@ -206,7 +206,7 @@ def create_tables():
         "substitutions",
         metadata,
         Column("match_id", Integer, ForeignKey("matches.match_id")),
-        Column("team_id", Integer, ForeignKey("teams.match_id")),
+        Column("team_id", Integer, ForeignKey("teams.team_id")),
         Column("player_in_id", Integer, ForeignKey("players.player_id")),
         Column("player_out_id", Integer, ForeignKey("players.player_id"))
     )
