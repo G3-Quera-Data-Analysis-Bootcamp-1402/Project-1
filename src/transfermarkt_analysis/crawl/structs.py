@@ -1,5 +1,6 @@
 from collections import defaultdict
 from dataclasses import dataclass, field
+from typing import List
 
 
 @dataclass
@@ -57,16 +58,41 @@ class Match:
     result: str = None
     matchday: str = None
     match_date: str = None
-    home_goals: MatchGoal = field(default_factory=defaultdict(MatchGoal))
-    away_goals: MatchGoal = field(default_factory=defaultdict(MatchGoal))
+    home_goals: List[MatchGoal] = field(default_factory=list)
+    away_goals: List[MatchGoal] = field(default_factory=list)
     home_substitutions: MatchSubstitute = field(
-        default_factory=defaultdict(MatchSubstitute)
+        default_factory=list
     )
     away_substitutions: MatchSubstitute = field(
-        default_factory=defaultdict(MatchSubstitute)
+        default_factory=list
     )
-    home_cards: MatchCard = field(default_factory=defaultdict(MatchCard))
-    away_cards: MatchCard = field(default_factory=defaultdict(MatchCard))
+    home_cards: List[MatchCard] = field(default_factory=list)
+    away_cards: List[MatchCard] = field(default_factory=list)
     statistics: MatchStatistics = field(
         default_factory=defaultdict(MatchStatistics)
     )
+
+
+@dataclass
+class MatchPlayer:
+    match_id: str = None
+    team_id: str = None
+    player_id: str = None
+    player: str = None
+
+
+@dataclass
+class MatchPenalty:
+    match_id: str = None
+    team_id: str = None
+    kicker_id: str = None
+    gk_id: str = None
+    gk: str = None
+    kicker: str = None
+
+
+@dataclass
+class MatchPlayersPenalties:
+    match_id: str = None
+    players: List[MatchPlayer] = field(default_factory=list)
+    penalties: List[MatchPenalty] = field(default_factory=list)
