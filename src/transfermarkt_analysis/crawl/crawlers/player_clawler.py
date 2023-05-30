@@ -12,7 +12,7 @@ from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Enum, ForeignKey, Inte
                         MetaData, String, Table, Text, create_engine, text)
 import regex as re
 import sys
-module = sys.modules[__name__]
+
 
 from mimesis import Generic, Locale
 provider = Generic(Locale.EN)
@@ -50,7 +50,7 @@ def scrape_player_data(player_url: str, http, headers) -> tuple:
             "User-Agent": provider.internet.user_agent()
         }
         timeout = Timeout(connect = 10, read = 10)
-        http = urllib3.PoolManager(headers=module.headers, timeout= timeout)
+        http = urllib3.PoolManager(headers=headers, timeout= timeout)
         return http, headers
     
     def generate_player_id(player_url: str) -> int:
@@ -157,8 +157,8 @@ def get_players_df():
             "User-Agent": provider.internet.user_agent()
         }
     timeout = Timeout(connect = 10, read = 10)
-    http = urllib3.PoolManager(headers=module.headers, timeout= timeout)
-    def process_input(player_url: str):
+    http = urllib3.PoolManager(headers=headers, timeout= timeout)
+    def process_input(player_url: str, http, headers):
 
         (player_id, player_name, date_of_birth, height, citizenship, foot) = scrape_player_data(player_url, http, headers)
         with lock:
@@ -167,11 +167,14 @@ def get_players_df():
     player_urls = read_player_urls()
     threads = []
     for player_url in tqdm(player_urls, desc= "Scraping players"):
-        thread = threading.Thread(target= process_input, args=(player_url,))
+        thread = threading.Thread(target= process_input, args=(player_url, http, headers))
         thread.start()
         threads.append(thread)
         if (len(threads) % 20) == 0:
             for thread in threads:
+                thread.join()
+
+    for thread in threads:
                 thread.join()
     
     players = pd.DataFrame(columns= ["player_id", "player_name", "date_of_birth", "height", "citizenship", "foot"])
@@ -209,3 +212,5 @@ def insert_players_into_db(players: DataFrame) -> None:
                 pass
             connection.commit()
 
+
+#insert_players_into_db(get_players_df())
