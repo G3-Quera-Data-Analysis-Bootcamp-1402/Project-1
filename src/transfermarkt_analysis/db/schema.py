@@ -48,7 +48,7 @@ def create_tables():
     players = Table(
         "players", 
         metadata, 
-        Column("player_id", Integer, autoincrement=True, primary_key=True),
+        Column("player_id", Integer, primary_key=True),
         Column("player_name", String(64)),
         Column("date_of_birth", TIMESTAMP),
         Column("height", Integer),
@@ -67,7 +67,7 @@ def create_tables():
     teams = Table(
         "teams",
         metadata,
-        Column("team_id", Integer, autoincrement=True, primary_key=True),
+        Column("team_id", Integer, primary_key=True),
         Column("team_name", String(64))
     )
     # seasons table
@@ -104,21 +104,9 @@ def create_tables():
         Column("player_id", Integer, ForeignKey("players.player_id")),
         Column("team_id", Integer, ForeignKey("teams.team_id")),
         Column("match_id", Integer, ForeignKey("matches.match_id")),
-        Column("starter", Boolean, nullable=True),
-        Column("subtitute_on", Integer, nullable=True),
-        Column("subtitute_off", Integer, nullable=True),
-        Column("minutes_played", Integer),
-        Column("on_the_bench", Boolean),
-        Column("injured", String(32), nullable=True),
-        Column("position_code", String(4)),
+        Column("season_id", Integer, ForeignKey("seasons.season_id")),
+        Column("position_code", String(2)),
         Column("position_name", String(32)),
-        Column("captain", Boolean, nullable=True),
-        Column("num_of_goals", Integer, nullable=True),
-        Column("num_of_assists", Integer, nullable=True),
-        Column("num_of_owngoals", Integer, nullable=True),
-        Column("yellow_card_time", Integer, nullable=True),
-        Column("second_yellow_card_time", Integer, nullable=True),
-        Column("red_card_time", Integer, nullable=True)
     )
     # team_appearances table
     team_appearances = Table(
@@ -136,38 +124,39 @@ def create_tables():
     matches = Table(
         "matches",
         metadata,
-        Column("match_id", Integer, autoincrement=True, primary_key=True),
+        Column("match_id", Integer, primary_key=True),
         Column("season_id", Integer, ForeignKey("seasons.season_id")),
-        Column("league_id", Integer, ForeignKey("leagues.league_id")),
         Column("home_team_id", Integer, ForeignKey("teams.team_id")),
         Column("away_team_id", Integer, ForeignKey("teams.team_id")),
         Column("match_day", Integer),
-        Column("home_team_goals", Integer),
-        Column("away_team_goals", Integer),
+        Column("home_team_score", Integer),
+        Column("away_team_score", Integer),
         Column("home_team_win", Boolean),
         Column("away_team_win", Boolean),
         Column("draw", Boolean),
-        Column("total_shots_home_team", Integer),
-        Column("total_shots_away_team", Integer),
-        Column("shots_on_target_home_team", Integer),
-        Column("shots_on_target_away_team", Integer),
-        Column("corner_home_team", Integer),
-        Column("corner_away_team", Integer),
-        Column("free_kicks_home_team", Integer),
-        Column("free_kicks_away_team", Integer),
-        Column("fouls_home_team", Integer),
-        Column("fouls_away_team", Integer),
-        Column("offsides_home_team", Integer),
-        Column("offsides_away_team", Integer),
+        Column("home_total_shots", Integer),
+        Column("away_total_shots", Integer),
+        Column("home_shots_off_target", Integer),
+        Column("away_shots_off_target", Integer),
+        Column("home_shots_saved", Integer),
+        Column("away_shots_saved", Integer),
+        Column("home_corners", Integer),
+        Column("away_corners", Integer),
+        Column("home_freekicks", Integer),
+        Column("away_freekicks", Integer),
+        Column("home_fouls", Integer),
+        Column("away_fouls", Integer),
+        Column("home_offsides", Integer),
+        Column("away_offsides", Integer),
     )
     # goals table
     goals = Table(
         "goals",
         metadata,
         Column("match_id", Integer, ForeignKey("matches.match_id")),
-        Column("scorred_id", Integer, ForeignKey("players.player_id")),
+        Column("team_id", Integer, ForeignKey("teams.team_id")),
+        Column("scorrer_id", Integer, ForeignKey("players.player_id")),
         Column("assist_id", Integer, ForeignKey("players.player_id")),
-        Column("team_scorer_id", Integer, ForeignKey("teams.team_id")),
         Column("goal_type", String(32), nullable=True)
     )
     # awards table
@@ -196,13 +185,30 @@ def create_tables():
     )
     # penalties table
     penalties = Table(
-        "penalties",
+        "missed_penalties",
         metadata,
         Column("match_id", Integer, ForeignKey("matches.match_id")),
+        Column("team_id", Integer, ForeignKey("teams.team_id")),
         Column("kicker_id", Integer, ForeignKey("players.player_id")),
         Column("gk_id", Integer, ForeignKey("players.player_id")),
-        Column("missed_penalty", Boolean),
-        Column("scored_penalty", Boolean),
+    )
+    # cards table
+    cards = Table(
+        "cards",
+        metadata,
+        Column("match_id", Integer, ForeignKey("matches.match_id")),
+        Column("team_id", Integer, ForeignKey("teams.team_id")),
+        Column("player_id", Integer, ForeignKey("players.player_id")),
+        Column("color", String(3)),
+    )
+    # substitutions table
+    substitutions = Table(
+        "substitutions",
+        metadata,
+        Column("match_id", Integer, ForeignKey("matches.match_id")),
+        Column("team_id", Integer, ForeignKey("teams.match_id")),
+        Column("player_in_id", Integer, ForeignKey("players.player_id")),
+        Column("player_out_id", Integer, ForeignKey("players.player_id"))
     )
     # create all tables
     metadata.create_all(db_engine)
