@@ -19,14 +19,14 @@ else:
 cnx.close()
 
 # #  توزیع تعداد بازی هایی که بازیکنان در یک فصل انجام می دهند
-# games_query = """
-# SELECT num_games, COUNT(*) AS  num_players,
-#     COUNT(*) / (SELECT COUNT(*) FROM players) 100 AS percentage 
-# FROM players 
-# WHERE season = '2021-2022' 
-# GROUP BY num_games 
-# ORDER BY num_games
-# """
+games_query = """
+SELECT player_id, COUNT(*) AS games_played, COUNT(*) * 100 / (
+    SELECT COUNT(*) FROM appearances
+) AS percentage_of_games
+FROM appearances
+GROUP BY player_id
+ORDER BY games_played DESC; 
+"""
 
 # query = "SELECT * FROM teams"
 
@@ -56,11 +56,11 @@ cnx.close()
 #     writer.writerows(games_results)
 
 # # رابطه بین تعداد گل های زده شده و قیمت تخمینی سایت برای یک بازیکن
-# goals_price_query = """
-# SELECT goals_scored, estimated_price
-# FROM players
-# WHERE season = '2021-2022'
-# """
+goals_price_query = """
+SELECT goals_scored, estimated_price
+FROM players
+WHERE season = '2021-2022'
+"""
 
 # cursor.execute(goals_price_query)
 # goals_price_results = cursor.fetchall()
