@@ -9,7 +9,8 @@ __all__ = [
     "SEASONS_RANGE",
     "MATCHDAY_RANGE",
     "DATA_DIR",
-    "URLS_DIR"
+    "URLS_DIR",
+    "CLEANIZED_DIR"
 ]
 
 
@@ -43,3 +44,4 @@ MATCHDAY_RANGE = range(1, 39)
 # example for accessing to player_urls.csv URLS_DIR / "player_urls.csv" -> data/urls/player_urls.csv
 DATA_DIR = pathlib.Path("data").resolve()
 URLS_DIR = DATA_DIR / "urls"
+CLEANIZED_DIR = DATA_DIR / "cleanized"

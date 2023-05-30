@@ -1,52 +1,67 @@
-import re
-from typing import Any, Dict, List
-
 import numpy as np
 import pandas as pd
 
-from transfermarkt_analysis.crawl.consts import DATA_DIR
+from transfermarkt_analysis.consts import DATA_DIR, CLEANIZED_DIR
+from transfermarkt_analysis.crawl.cleanizers.base import (
+    value_cleanizer,
+    matches_df_concatenator,
+)
 
 
-CLEANIZED_DIR = DATA_DIR / "cleanized"
-
-
-
-def fee_col_cleanizer(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    cleanize fee_of_transfer column
-    1- replace -, ? with np.nan
-    2- replace leihe with loan -> 1
-    3- replace leih-ende with end-loan -> -1.0
-    4- replace ablösefrei with free -> 0.0
-    5- replace <num>,<num> Mio with <num><num>0000.0
-    6- replace <num>,<num> Tsd with <num><num>000.0
-    7- replace <num>,<num> € with <num><num>
-    """
-    df["fee_of_transfer"] = (
-        df["fee_of_transfer"]
-        .mask(df["fee_of_transfer"].str.lower() == "leihe", "1")
-        .mask(df["fee_of_transfer"].str.contains("Leih-Ende"), "-1")
-        .mask(df["fee_of_transfer"].str.contains("ablösefrei"), "0")
-        .apply(
-            lambda x: ",".join(re.findall(r"\d+", x)).replace(",", "") + "0000"
-            if "Mio" in x
-            else x
-        )
-        .apply(lambda x: "".join(re.findall(r"\d+", x)) + "000" if "Tsd" in x else x)
-        .apply(lambda x: "".join(re.findall(r"\d+", x)) if "€" in x else x)
-        .mask(df["fee_of_transfer"].isin(["-", "?", "draft"]), np.nan)
-        .astype("float")
-    )
-    return df
+__all__ = ["transfers_df_cleanizer", "store_cleanized_transfers_df"]
 
 
 def transfers_df_cleanizer():
     df: pd.DataFrame = pd.read_csv(DATA_DIR / "transfers.csv", index_col=0)
-    df = fee_col_cleanizer(df)
-    return df
+    df = value_cleanizer(df, "fee_of_transfer")
+    df = value_cleanizer(df, "market_value")
+    home_df = (
+        matches_df_concatenator()
+        .loc[:, ["home_team", "home_team_id"]]
+        .reset_index(drop=True)
+    )
+    away_df = (
+        matches_df_concatenator()
+        .loc[:, ["away_team", "away_team_id"]]
+        .reset_index()
+    )
+    df["left_team_id"] = (
+        df["left_team"]
+        .mask(
+            df["left_team"].isin(home_df.loc[:, "home_team"]),
+            home_df.loc[:, "home_team_id"],
+        )
+        .mask(
+            df["left_team"].isin(away_df.loc[:, "away_team"]),
+            away_df.loc[:, "away_team_id"],
+        )
+    )
+    df["joined_team_id"] = (
+        df["joined_team"]
+        .mask(
+            df["joined_team"].isin(home_df.loc[:, "home_team"]),
+            home_df.loc[:, "home_team_id"],
+        )
+        .mask(
+            df["joined_team"].isin(away_df.loc[:, "away_team"]),
+            away_df.loc[:, "away_team_id"],
+        )
+    )
+
+    return df.loc[
+        (df["left_team_id"].str.isnumeric()) & (df["joined_team_id"].str.isnumeric()),
+        [
+            "player_id",
+            "season_id",
+            "left_team_id",
+            "joined_team_id",
+            "market_value",
+            "fee_of_transfer",
+        ],
+    ]
 
 
 def store_cleanized_transfers_df() -> None:
     df: pd.DataFrame = transfers_df_cleanizer()
     df = df.dropna().drop_duplicates()
-    df.to_csv(CLEANIZED_DIR / "transfers.csv", index=False)
+    df.to_csv(CLEANIZED_DIR / "contracts.csv", index=False)
