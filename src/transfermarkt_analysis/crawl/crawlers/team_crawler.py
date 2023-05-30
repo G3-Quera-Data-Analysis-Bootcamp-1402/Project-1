@@ -12,7 +12,7 @@ from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Enum, ForeignKey, Inte
                         MetaData, String, Table, Text, create_engine, text)
 import regex as re
 import sys
-module = sys.modules[__name__]
+
 
 from mimesis import Generic, Locale
 provider = Generic(Locale.EN)
@@ -49,7 +49,7 @@ def scrape_team_data(team_url: str, http, headers) -> tuple:
             "User-Agent": provider.internet.user_agent()
         }
         timeout = Timeout(connect = 10, read = 10)
-        http = urllib3.PoolManager(headers=module.headers, timeout= timeout)
+        http = urllib3.PoolManager(headers=headers, timeout= timeout)
         return http, headers
 
 
@@ -94,7 +94,7 @@ def get_teams_df():
             "User-Agent": provider.internet.user_agent()
         }
     timeout = Timeout(connect = 10, read = 10)
-    http = urllib3.PoolManager(headers=module.headers, timeout= timeout)
+    http = urllib3.PoolManager(headers=headers, timeout= timeout)
     teams = pd.DataFrame(columns= ["team_id", "team_name"])
     team_urls = read_team_urls()
     for team_url in tqdm(team_urls, desc= "Scraping teams"):
@@ -118,3 +118,5 @@ def insert_teams_into_db(teams: DataFrame) -> None:
             except:
                 pass
             connection.commit()
+
+insert_teams_into_db(get_teams_df())

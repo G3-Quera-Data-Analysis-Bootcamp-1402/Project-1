@@ -12,7 +12,7 @@ from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Enum, ForeignKey, Inte
                         MetaData, String, Table, Text, create_engine, text)
 import regex as re
 import sys
-module = sys.modules[__name__]
+
 
 from mimesis import Generic, Locale
 provider = Generic(Locale.EN)
@@ -40,7 +40,7 @@ def scrape_transfers_data(season_start_year: int, league_url: str, http, headers
             "User-Agent": provider.internet.user_agent()
         }
         timeout = Timeout(connect = 10, read = 10)
-        http = urllib3.PoolManager(headers=module.headers, timeout= timeout)
+        http = urllib3.PoolManager(headers=headers, timeout= timeout)
         return http, headers
 
     def generate_url(league_url, season_start_year: int):
@@ -217,7 +217,7 @@ def get_transfers_df() -> DataFrame:
             "User-Agent": provider.internet.user_agent()
         }
     timeout = Timeout(connect = 10, read = 10)
-    http = urllib3.PoolManager(headers=module.headers, timeout= timeout)
+    http = urllib3.PoolManager(headers=headers, timeout= timeout)
     transfers_df = pd.DataFrame(columns = ["player_id", "season_id", "left_team", "joined_team", "fee_of_transfer"])
     team_income_expenditures = pd.DataFrame(columns= ["season", "team_name", "income", "expenditure"])
     db_conf, db_url = load_db_config()
@@ -246,4 +246,4 @@ def insert_transfers_into_db(df: DataFrame):
     df[1].to_csv("data/team_income_expenditures.csv")
 
 
-insert_transfers_into_db(get_transfers_df())
+#insert_transfers_into_db(get_transfers_df())
