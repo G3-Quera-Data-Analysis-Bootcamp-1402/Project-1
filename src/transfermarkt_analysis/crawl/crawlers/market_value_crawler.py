@@ -2,16 +2,12 @@ import time
 from transfermarkt_analysis.crawl.url_extractors import *
 import threading
 from urllib3 import Timeout
-from transfermarkt_analysis.db.schema import FootType
 from pandas import DataFrame, Series
 from tqdm import tqdm
-from datetime import datetime
 from os import getenv
 import dotenv
-from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Enum, ForeignKey, Integer,
-                        MetaData, String, Table, Text, create_engine, text)
-import regex as re
-import sys
+from sqlalchemy import create_engine
+
 
 
 from mimesis import Generic, Locale
@@ -48,6 +44,7 @@ def scrape_team_data(team_url, http, headers) -> tuple:
     """
     
     def reset_user_agent(http, headers):
+        time.sleep(5)
         headers = {
             "User-Agent": provider.internet.user_agent()
         }
@@ -118,9 +115,12 @@ def get_market_values_df():
         thread = threading.Thread(target = proccess_input, args = (team_url, http, headers))
         thread.start()
         threads.append(thread)
-        if (len(threads) % 20) == 0:
+        if (len(threads) % 40) == 0:
             for thread in threads:
-                thread.join()
+                try:
+                    thread.join(timeout = 20)
+                except:
+                    thread.start()
     for thread in threads:
                 thread.join()
     
