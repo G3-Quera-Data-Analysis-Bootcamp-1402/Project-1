@@ -12,6 +12,10 @@ from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Enum, ForeignKey, Inte
                         MetaData, String, Table, Text, create_engine, text)
 import regex as re
 import sys
+import urllib3
+from consts import *
+import pandas as pd
+from bs4 import BeautifulSoup
 
 
 from mimesis import Generic, Locale
@@ -106,6 +110,7 @@ def get_teams_df():
 
 def insert_teams_into_db(teams: DataFrame) -> None:
     print(teams)
+    teams.to_csv("data/teams.csv")
     db_conf, db_url = load_db_config()
     db_engine = create_engine(db_url)
     with db_engine.connect() as connection:
