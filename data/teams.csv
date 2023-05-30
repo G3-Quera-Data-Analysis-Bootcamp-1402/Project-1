@@ -1,148 +1,148 @@
-team_id,team_name
-1,"FC Chelsea"
-2,"Manchester City"
-3,"FC Arsenal"
-4,"Manchester United"
-5,"Tottenham Hotspur"
-6,"FC Liverpool"
-7,"FC Southampton"
-8,"Swansea City"
-9,"Stoke City"
-10,"Crystal Palace"
-11,"FC Everton"
-12,"West Ham United"
-13,"West Bromwich Albion"
-14,"Leicester City"
-15,"Newcastle United"
-16,"AFC Sunderland"
-17,"Aston Villa"
-18,"AFC Bournemouth"
-19,"FC Watford"
-20,"Norwich City"
-21,"FC Burnley"
-22,"FC Middlesbrough"
-23,"Hull City"
-24,"Brighton & Hove Albion"
-25,"Huddersfield Town"
-26,"Wolverhampton Wanderers"
-27,"Cardiff City"
-28,"FC Fulham"
-29,"Sheffield United"
-30,"Leeds United"
-31,"FC Brentford"
-32,"FC Barcelona"
-33,"Real Madrid"
-34,"Atlético Madrid"
-35,"FC Valencia"
-36,"FC Sevilla"
-37,"FC Villarreal"
-38,"Athletic Bilbao"
-39,"Celta Vigo"
-40,"FC Málaga"
-41,"Espanyol Barcelona"
-42,"Rayo Vallecano"
-43,"Real Sociedad San Sebastián"
-44,"UD Levante"
-45,"FC Getafe"
-46,"Deportivo La Coruna"
-47,"FC Granada"
-48,"SD Eibar"
-49,"UD Las Palmas"
-50,"Sporting Gijón"
-51,"Real Betis Sevilla"
-52,"Deportivo Alavés"
-53,"CD Leganés"
-54,"CA Osasuna"
-55,"FC Girona"
-56,"SD Huesca"
-57,"Real Valladolid"
-58,"RCD Mallorca"
-59,"FC Cádiz"
-60,"FC Elche"
-61,"FC Bayern München"
-62,"VfL Wolfsburg"
-63,"Borussia Mönchengladbach"
-64,"Bayer 04 Leverkusen"
-65,"FC Augsburg"
-66,"FC Schalke 04"
-67,"Borussia Dortmund"
-68,"TSG 1899 Hoffenheim"
-69,"Eintracht Frankfurt"
-70,"SV Werder Bremen"
-71,"1.FSV Mainz 05"
-72,"1.FC Köln"
-73,"Hannover 96"
-74,"VfB Stuttgart"
-75,"Hertha BSC"
-76,"Hamburger SV"
-77,"FC Ingolstadt 04"
-78,"SV Darmstadt 98"
-79,"SC Freiburg"
-80,"RasenBallsport Leipzig"
-81,"Fortuna Düsseldorf"
-82,"1.FC Nürnberg"
-83,"SC Paderborn 07"
-84,"1.FC Union Berlin"
-85,"Arminia Bielefeld"
-86,"VfL Bochum"
-87,"SpVgg Greuther Fürth"
-88,"Juventus Turin"
-89,"AS Rom"
-90,"Lazio Rom"
-91,"AC Florenz"
-92,"SSC Neapel"
-93,"Genua CFC"
-94,"Sampdoria Genua"
-95,"Inter Mailand"
-96,"FC Turin"
-97,"AC Mailand"
-98,"Palermo FC"
-99,"US Sassuolo"
-100,"Hellas Verona"
-101,"Chievo Verona"
-102,"FC Empoli"
-103,"Udinese Calcio"
-104,"Atalanta Bergamo"
-105,"FC Bologna"
-106,"AC Carpi"
-107,"Frosinone Calcio"
-108,"Cagliari Calcio"
-109,"FC Crotone"
-110,"Delfino Pescara 1936"
-111,"Benevento Calcio"
-112,SPAL
-113,"Parma Calcio 1913"
-114,"Brescia Calcio"
-115,"US Lecce"
-116,"Spezia Calcio"
-117,"US Salernitana 1919"
-118,"Venezia FC"
-119,"FC Paris Saint-Germain"
-120,"Olympique Lyon"
-121,"AS Monaco"
-122,"Olympique Marseille"
-123,"AS Saint-Étienne"
-124,"FC Girondins Bordeaux"
-125,"HSC Montpellier"
-126,"LOSC Lille"
-127,"FC Stade Rennes"
-128,"EA Guingamp"
-129,"OGC Nizza"
-130,"SC Bastia"
-131,"SM Caen"
-132,"FC Nantes"
-133,"Stade Reims"
-134,"FC Lorient"
-135,"FC Toulouse"
-136,"Angers SCO"
-137,"ESTAC Troyes"
-138,"GFC Ajaccio"
-139,"AS Nancy-Lorraine"
-140,"Dijon FCO"
-141,"FC Metz"
-142,"Amiens SC"
-143,"RC Straßburg Alsace"
-144,"Nîmes Olympique"
-145,"Stade Brest 29"
-146,"RC Lens"
-147,"Clermont Foot 63"
+team_id,team_name,league_id
+1,FC Chelsea,2
+2,Manchester City,2
+3,FC Arsenal,2
+4,Manchester United,2
+5,Tottenham Hotspur,2
+6,FC Liverpool,2
+7,FC Southampton,2
+8,Swansea City,2
+9,Stoke City,2
+10,Crystal Palace,2
+11,FC Everton,2
+12,West Ham United,2
+13,West Bromwich Albion,2
+14,Leicester City,2
+15,Newcastle United,2
+16,AFC Sunderland,2
+17,Aston Villa,2
+18,AFC Bournemouth,2
+19,FC Watford,2
+20,Norwich City,2
+21,FC Burnley,2
+22,FC Middlesbrough,2
+23,Hull City,2
+24,Brighton & Hove Albion,2
+25,Huddersfield Town,2
+26,Wolverhampton Wanderers,2
+27,Cardiff City,2
+28,FC Fulham,2
+29,Sheffield United,2
+30,Leeds United,2
+31,FC Brentford,2
+32,FC Barcelona,3
+33,Real Madrid,3
+34,Atlético Madrid,3
+35,FC Valencia,3
+36,FC Sevilla,3
+37,FC Villarreal,3
+38,Athletic Bilbao,3
+39,Celta Vigo,3
+40,FC Málaga,3
+41,Espanyol Barcelona,3
+42,Rayo Vallecano,3
+43,Real Sociedad San Sebastián,3
+44,UD Levante,3
+45,FC Getafe,3
+46,Deportivo La Coruna,3
+47,FC Granada,3
+48,SD Eibar,3
+49,UD Las Palmas,3
+50,Sporting Gijón,3
+51,Real Betis Sevilla,3
+52,Deportivo Alavés,3
+53,CD Leganés,3
+54,CA Osasuna,3
+55,FC Girona,3
+56,SD Huesca,3
+57,Real Valladolid,3
+58,RCD Mallorca,3
+59,FC Cádiz,3
+60,FC Elche,3
+61,FC Bayern München,4
+62,VfL Wolfsburg,4
+63,Borussia Mönchengladbach,4
+64,Bayer 04 Leverkusen,4
+65,FC Augsburg,4
+66,FC Schalke 04,4
+67,Borussia Dortmund,4
+68,TSG 1899 Hoffenheim,4
+69,Eintracht Frankfurt,4
+70,SV Werder Bremen,4
+71,1.FSV Mainz 05,4
+72,1.FC Köln,4
+73,Hannover 96,4
+74,VfB Stuttgart,4
+75,Hertha BSC,4
+76,Hamburger SV,4
+77,FC Ingolstadt 04,4
+78,SV Darmstadt 98,4
+79,SC Freiburg,4
+80,RasenBallsport Leipzig,4
+81,Fortuna Düsseldorf,4
+82,1.FC Nürnberg,4
+83,SC Paderborn 07,4
+84,1.FC Union Berlin,4
+85,Arminia Bielefeld,4
+86,VfL Bochum,4
+87,SpVgg Greuther Fürth,4
+88,Juventus Turin,5
+89,AS Rom,5
+90,Lazio Rom,5
+91,AC Florenz,5
+92,SSC Neapel,5
+93,Genua CFC,5
+94,Sampdoria Genua,5
+95,Inter Mailand,5
+96,FC Turin,5
+97,AC Mailand,5
+98,Palermo FC,5
+99,US Sassuolo,5
+100,Hellas Verona,5
+101,Chievo Verona,5
+102,FC Empoli,5
+103,Udinese Calcio,5
+104,Atalanta Bergamo,5
+105,FC Bologna,5
+106,AC Carpi,5
+107,Frosinone Calcio,5
+108,Cagliari Calcio,5
+109,FC Crotone,5
+110,Delfino Pescara 1936,5
+111,Benevento Calcio,5
+112,SPAL,5
+113,Parma Calcio 1913,5
+114,Brescia Calcio,5
+115,US Lecce,5
+116,Spezia Calcio,5
+117,US Salernitana 1919,5
+118,Venezia FC,5
+119,FC Paris Saint-Germain,6
+120,Olympique Lyon,6
+121,AS Monaco,6
+122,Olympique Marseille,6
+123,AS Saint-Étienne,6
+124,FC Girondins Bordeaux,6
+125,HSC Montpellier,6
+126,LOSC Lille,6
+127,FC Stade Rennes,6
+128,EA Guingamp,6
+129,OGC Nizza,6
+130,SC Bastia,6
+131,SM Caen,6
+132,FC Nantes,6
+133,Stade Reims,6
+134,FC Lorient,6
+135,FC Toulouse,6
+136,Angers SCO,6
+137,ESTAC Troyes,6
+138,GFC Ajaccio,6
+139,AS Nancy-Lorraine,6
+140,Dijon FCO,6
+141,FC Metz,6
+142,Amiens SC,6
+143,RC Straßburg Alsace,6
+144,Nîmes Olympique,6
+145,Stade Brest 29,6
+146,RC Lens,6
+147,Clermont Foot 63,6
