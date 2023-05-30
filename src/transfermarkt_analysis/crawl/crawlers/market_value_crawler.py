@@ -76,9 +76,11 @@ def scrape_team_data(team_url, http, headers) -> tuple:
             for link in links:
                 if "profil/spieler" in link["href"]:
                     player_name = link.text.strip()
-                df.loc[len(df)] = {"player_name": player_name, "season": team_url.split("/")[-1], "market_value": market_value}
+                    break
             else:
                 continue
+            df.loc[len(df)] = {"player_name": player_name, "season": team_url.split("/")[-1], "market_value": market_value}
+
         df.drop_duplicates("player_name", inplace= True)
         return df
 
@@ -115,15 +117,10 @@ def get_market_values_df():
         thread = threading.Thread(target = proccess_input, args = (team_url, http, headers))
         thread.start()
         threads.append(thread)
-        if (len(threads) % 40) == 0:
+        if (len(threads) % 20) == 0:
             for thread in threads:
-                try:
-                    thread.join(timeout = 20)
-                except:
-                    thread.start()
-    for thread in threads:
                 thread.join()
-    
+
     market_values_df = pd.concat(results, ignore_index = True)
     return market_values_df
 
