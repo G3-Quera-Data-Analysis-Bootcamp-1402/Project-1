@@ -86,11 +86,11 @@ def date_df_cleanizer(df: pd.DataFrame) -> pd.DataFrame:
         date_list: List[str] = str(date).split(".")
         seasons: List[str] = ["15", "16", "17", "18", "19", "20", "21"]
         if date_list[-1] in seasons:
-            return "-".join(["20" + date_list[2], date_list[1], date_list[0]])
-        return "-".join(["00-00-00"])
+            return "20" + date_list[2]
+        return 2014
 
     data: List[Dict[str, Any]] = [
-        {"season": get_date(str(date)).split("-")[0], "date": get_date(str(date))}
+        {"season_id": get_date(date)}
         for date in df.loc[:, "match_date"]
     ]
 

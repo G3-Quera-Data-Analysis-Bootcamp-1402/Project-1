@@ -16,13 +16,17 @@ __all__ = [
 
 def initialize_db():
     db_engine: Engine = create_engine(db_url)
+    
+    def get_df(csv_file: str) -> pd.DataFrame:
+        return pd.read_csv(CLEANIZED_DIR / f"{csv_file}")
+    
     try:
         for csv_file in os.listdir(CLEANIZED_DIR):
-            # remove .csv and get file name
-            # beacause we need it (they have same name as db tables)
-            csv_file_name = csv_file.split(".")[0]
-            df: pd.DataFrame = pd.read_csv(csv_file)
-            df.to_sql(csv_file_name, con=db_engine, if_exists="append")
-            print(Fore + f"{csv_file_name} table data initialized :)")
+            # remove .csv format name.csv -> [name, csv] -> name
+            file_name: str = csv_file.split(".")[0]
+            db_table: str = file_name
+            df: pd.DataFrame = get_df(csv_file)
+            df.to_sql(name=db_table, con=db_engine, if_exists="append", index=False)
+            print(Fore.GREEN + f"{db_table} table initialized :)")
     except Exception as err:
         raise err

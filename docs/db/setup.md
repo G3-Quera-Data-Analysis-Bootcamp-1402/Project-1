@@ -39,13 +39,7 @@ DB_NAME="transfermarkt"
 execute python command in your terminal
 
 ```shell
-python
-```
-
-```shell
->>> from transfermarkt_analysis.db.schema import create_tables
->>> create_tables()
->>> exit()
+python scripts/db_setup.py
 ```
 
 **Done!** You can check tables created in given database

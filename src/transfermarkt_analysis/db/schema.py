@@ -2,7 +2,7 @@ from enum import Enum as PyEnum
 from os import getenv
 
 import dotenv
-from sqlalchemy import (TIMESTAMP, Boolean, Column, Enum, ForeignKey, Integer,
+from sqlalchemy import (Boolean, Column, Enum, ForeignKey, Integer,
                         MetaData, String, Table, Text, create_engine)
 
 
@@ -48,9 +48,9 @@ def create_tables():
     players = Table(
         "players", 
         metadata, 
-        Column("player_id", Integer, primary_key=True),
+        Column("player_id", Integer),
         Column("player_name", String(64)),
-        Column("date_of_birth", TIMESTAMP),
+        Column("date_of_birth", Integer),
         Column("height", Integer),
         Column("citizenship", String(32)),
         Column("foot", Enum(FootType), default=FootType.right)
@@ -67,23 +67,22 @@ def create_tables():
     teams = Table(
         "teams",
         metadata,
-        Column("team_id", Integer, primary_key=True),
+        Column("team_id", Integer),
         Column("team_name", String(64)),
-        Column("league_id", Integer, ForeignKey("leagues.league_id"))
+        Column("league_id", Integer)
     )
     # seasons table
     seasons = Table(
         "seasons",
         metadata,
-        Column("season_id", Integer, autoincrement=True, primary_key=True),
-        Column("season_name", String(8))
+        Column("season_id", Integer, primary_key=True),
     )
     # market_values table
     market_values = Table(
         "market_values",
         metadata,
-        Column("player_id", Integer, ForeignKey("players.player_id")),
-        Column("season_id", Integer, ForeignKey("seasons.season_id")),
+        Column("player_id", Integer, nullable=True),
+        Column("season_id", Integer),
         Column("market_value", Integer)
     )
     # contracts table
@@ -91,20 +90,20 @@ def create_tables():
         "contracts",
         metadata,
         Column("contract_id", Integer, autoincrement=True, primary_key=True),
-        Column("player_id", Integer, ForeignKey("players.player_id")),
-        Column("season_id", Integer, ForeignKey("seasons.season_id")),
-        Column("left_team_id", Integer, ForeignKey("teams.team_id")),
-        Column("joined_team_id", Integer, ForeignKey("teams.team_id")),
+        Column("player_id", Integer, nullable=True),
+        Column("season_id", Integer, nullable=True),
+        Column("left_team_id", Integer, nullable=True),
+        Column("joined_team_id", Integer, nullable=True),
         Column("fee_of_transfer", Integer)
     )
     # player_appearances table
     player_appearances = Table(
         "player_appearances",
         metadata,
-        Column("player_id", Integer, ForeignKey("players.player_id")),
-        Column("team_id", Integer, ForeignKey("teams.team_id")),
-        Column("match_id", Integer, ForeignKey("matches.match_id")),
-        Column("season_id", Integer, ForeignKey("seasons.season_id")),
+        Column("player_id", Integer, nullable=True),
+        Column("team_id", Integer, nullable=True),
+        Column("match_id", Integer, nullable=True),
+        Column("season_id", Integer),
         Column("position_code", String(2)),
         Column("position_name", String(32)),
     )
@@ -112,8 +111,8 @@ def create_tables():
     team_appearances = Table(
         "team_appearances",
         metadata,
-        Column("team_id", Integer, ForeignKey("teams.team_id")),
-        Column("season_id", Integer, ForeignKey("seasons.season_id")),
+        Column("team_id", Integer),
+        Column("season_id", Integer),
         Column("team_income_fee", Integer),
         Column("team_expenditure_fee", Integer),
     )
@@ -121,11 +120,13 @@ def create_tables():
     matches = Table(
         "matches",
         metadata,
-        Column("match_id", Integer, primary_key=True),
-        Column("season_id", Integer, ForeignKey("seasons.season_id")),
-        Column("home_team_id", Integer, ForeignKey("teams.team_id")),
-        Column("away_team_id", Integer, ForeignKey("teams.team_id")),
-        Column("match_day", Integer),
+        Column("match_id", Integer),
+        Column("season_id", Integer),
+        Column("home_team_id", Integer),
+        Column("away_team_id", Integer),
+        Column("home_team", String(64)),
+        Column("away_team", String(64)),
+        Column("matchday", Integer),
         Column("home_team_score", Integer),
         Column("away_team_score", Integer),
         Column("home_team_win", Boolean),
@@ -150,10 +151,10 @@ def create_tables():
     goals = Table(
         "goals",
         metadata,
-        Column("match_id", Integer, ForeignKey("matches.match_id")),
-        Column("team_id", Integer, ForeignKey("teams.team_id")),
-        Column("scorrer_id", Integer, ForeignKey("players.player_id")),
-        Column("assist_id", Integer, ForeignKey("players.player_id")),
+        Column("match_id", Integer),
+        Column("team_id", Integer),
+        Column("scorrer_id", Integer),
+        Column("assist_id", Integer),
         Column("goal_type", String(32), nullable=True)
     )
     # awards table
@@ -168,44 +169,46 @@ def create_tables():
     award_winners = Table(
         "award_winners",
         metadata,
-        Column("award_id", Integer, ForeignKey("awards.award_id")),
-        Column("season_id", Integer, ForeignKey("seasons.season_id")),
-        Column("player_id", Integer, ForeignKey("players.player_id")),
+        Column("award_id", Integer),
+        Column("season_id", Integer),
+        Column("player_id", Integer),
     )
     # award_winners_teams table
     award_winners_teams = Table(
         "award_winners_teams",
         metadata,
-        Column("award_id", Integer, ForeignKey("awards.award_id")),
-        Column("season_id", Integer, ForeignKey("seasons.season_id")),
-        Column("team_id", Integer, ForeignKey("teams.team_id")),
+        Column("award_id", Integer),
+        Column("season_id", Integer),
+        Column("team_id", Integer),
     )
     # penalties table
     penalties = Table(
         "penalties",
         metadata,
-        Column("match_id", Integer, ForeignKey("matches.match_id")),
-        Column("team_id", Integer, ForeignKey("teams.team_id")),
-        Column("kicker_id", Integer, ForeignKey("players.player_id")),
-        Column("gk_id", Integer, ForeignKey("players.player_id")),
+        Column("match_id", Integer),
+        Column("team_id", Integer),
+        Column("kicker_id", Integer),
+        Column("gk_id", Integer),
+        Column("gk", String(64)),
+        Column("kicker", String(64))
     )
     # cards table
     cards = Table(
         "cards",
         metadata,
-        Column("match_id", Integer, ForeignKey("matches.match_id")),
-        Column("team_id", Integer, ForeignKey("teams.team_id")),
-        Column("player_id", Integer, ForeignKey("players.player_id")),
+        Column("match_id", Integer),
+        Column("team_id", Integer),
+        Column("player_id", Integer),
         Column("card", String(16)),
     )
     # substitutions table
     substitutions = Table(
         "substitutions",
         metadata,
-        Column("match_id", Integer, ForeignKey("matches.match_id")),
-        Column("team_id", Integer, ForeignKey("teams.team_id")),
-        Column("player_in_id", Integer, ForeignKey("players.player_id")),
-        Column("player_out_id", Integer, ForeignKey("players.player_id"))
+        Column("match_id", Integer),
+        Column("team_id", Integer),
+        Column("player_in_id", Integer),
+        Column("player_out_id", Integer)
     )
     # create all tables
     metadata.create_all(db_engine)
