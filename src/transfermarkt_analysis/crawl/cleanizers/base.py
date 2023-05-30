@@ -26,8 +26,8 @@ def value_cleanizer(df: pd.DataFrame, col: str) -> pd.DataFrame:
     """
     df[col] = (
         df[col]
-        .mask(df[col].str.lower() == "leihe", "1")
-        .mask(df[col].str.contains("Leih-Ende"), "-1")
+        .mask(df[col].str.lower() == "leihe", "-1")
+        .mask(df[col].str.contains("Leih-Ende"), "-2")
         .mask(df[col].str.contains("ablösefrei"), "0")
         .apply(
             lambda x: ",".join(re.findall(r"\d+", x)).replace(",", "") + "0000"
@@ -36,8 +36,8 @@ def value_cleanizer(df: pd.DataFrame, col: str) -> pd.DataFrame:
         )
         .apply(lambda x: "".join(re.findall(r"\d+", x)) + "000" if "Tsd" in x else x)
         .apply(lambda x: "".join(re.findall(r"\d+", x)) if "€" in x else x)
-        .mask(df[col].isin(["-", "?", "draft"]), np.nan)
-        .astype("float")
+        .mask(df[col].isin(["-", "?", "draft"]), "-3")
+        .astype("int")
     )
     return df
 
