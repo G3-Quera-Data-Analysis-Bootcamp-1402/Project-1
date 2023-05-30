@@ -10,7 +10,9 @@ __all__ = [
     "Match",
     "MatchPenalty",
     "MatchPlayer",
-    "MatchPlayersPenalties"
+    "MatchPlayersPenalties",
+    "MatchAppearance",
+    "MatchAppearances",
 ]
 
 
@@ -107,3 +109,17 @@ class MatchPlayersPenalties:
     match_id: str = None
     players: List[MatchPlayer] = field(default_factory=list)
     penalties: List[MatchPenalty] = field(default_factory=list)
+
+
+
+@dataclass
+class MatchAppearance:
+    match_id: str = None
+    team_id: str = None
+    player_id: str = None
+    position_name: str = None
+
+
+@dataclass
+class MatchAppearances:
+    appearances: List[MatchAppearance] = field(default_factory=list)
