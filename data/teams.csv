@@ -1,687 +1,148 @@
-team_id,team_name
-631,FC Chelsea
-281,Manchester City
-11,FC Arsenal
-985,Manchester United
-148,Tottenham Hotspur
-31,FC Liverpool
-180,FC Southampton
-2288,Swansea City
-512,Stoke City
-873,Crystal Palace
-29,FC Everton
-379,West Ham United
-984,West Bromwich Albion
-1003,Leicester City
-762,Newcastle United
-289,AFC Sunderland
-405,Aston Villa
-989,AFC Bournemouth
-1010,FC Watford
-1123,Norwich City
-1003,Leicester City
-11,FC Arsenal
-148,Tottenham Hotspur
-281,Manchester City
-985,Manchester United
-180,FC Southampton
-379,West Ham United
-31,FC Liverpool
-512,Stoke City
-631,FC Chelsea
-29,FC Everton
-2288,Swansea City
-1010,FC Watford
-984,West Bromwich Albion
-873,Crystal Palace
-989,AFC Bournemouth
-289,AFC Sunderland
-1132,FC Burnley
-641,FC Middlesbrough
-3008,Hull City
-631,FC Chelsea
-148,Tottenham Hotspur
-281,Manchester City
-31,FC Liverpool
-11,FC Arsenal
-985,Manchester United
-29,FC Everton
-180,FC Southampton
-989,AFC Bournemouth
-984,West Bromwich Albion
-379,West Ham United
-1003,Leicester City
-512,Stoke City
-873,Crystal Palace
-2288,Swansea City
-1132,FC Burnley
-1010,FC Watford
-762,Newcastle United
-1237,Brighton & Hove Albion
-1110,Huddersfield Town
-281,Manchester City
-985,Manchester United
-148,Tottenham Hotspur
-31,FC Liverpool
-631,FC Chelsea
-11,FC Arsenal
-1132,FC Burnley
-29,FC Everton
-1003,Leicester City
-762,Newcastle United
-873,Crystal Palace
-989,AFC Bournemouth
-379,West Ham United
-1010,FC Watford
-1237,Brighton & Hove Albion
-1110,Huddersfield Town
-180,FC Southampton
-543,Wolverhampton Wanderers
-603,Cardiff City
-931,FC Fulham
-281,Manchester City
-31,FC Liverpool
-631,FC Chelsea
-148,Tottenham Hotspur
-11,FC Arsenal
-985,Manchester United
-543,Wolverhampton Wanderers
-29,FC Everton
-1003,Leicester City
-379,West Ham United
-1010,FC Watford
-873,Crystal Palace
-762,Newcastle United
-989,AFC Bournemouth
-1132,FC Burnley
-180,FC Southampton
-1237,Brighton & Hove Albion
-1123,Norwich City
-350,Sheffield United
-405,Aston Villa
-11,FC Arsenal
-405,Aston Villa
-1237,Brighton & Hove Albion
-1132,FC Burnley
-631,FC Chelsea
-873,Crystal Palace
-29,FC Everton
-931,FC Fulham
-399,Leeds United
-1003,Leicester City
-31,FC Liverpool
-281,Manchester City
-985,Manchester United
-762,Newcastle United
-350,Sheffield United
-180,FC Southampton
-148,Tottenham Hotspur
-984,West Bromwich Albion
-379,West Ham United
-543,Wolverhampton Wanderers
-11,FC Arsenal
-405,Aston Villa
-1148,FC Brentford
-1237,Brighton & Hove Albion
-1132,FC Burnley
-631,FC Chelsea
-873,Crystal Palace
-29,FC Everton
-399,Leeds United
-1003,Leicester City
-31,FC Liverpool
-281,Manchester City
-985,Manchester United
-762,Newcastle United
-1123,Norwich City
-180,FC Southampton
-148,Tottenham Hotspur
-1010,FC Watford
-379,West Ham United
-543,Wolverhampton Wanderers
-131,FC Barcelona
-418,Real Madrid
-13,Atlético Madrid
-1049,FC Valencia
-368,FC Sevilla
-1050,FC Villarreal
-621,Athletic Bilbao
-940,Celta Vigo
-1084,FC Málaga
-714,Espanyol Barcelona
-367,Rayo Vallecano
-681,Real Sociedad San Sebastián
-3368,UD Levante
-3709,FC Getafe
-897,Deportivo La Coruna
-16795,FC Granada
-1533,SD Eibar
-472,UD Las Palmas
-2448,Sporting Gijón
-150,Real Betis Sevilla
-131,FC Barcelona
-418,Real Madrid
-13,Atlético Madrid
-621,Athletic Bilbao
-1050,FC Villarreal
-150,Real Betis Sevilla
-368,FC Sevilla
-1108,Deportivo Alavés
-1244,CD Leganés
-714,Espanyol Barcelona
-16795,FC Granada
-1533,SD Eibar
-940,Celta Vigo
-2448,Sporting Gijón
-897,Deportivo La Coruna
-681,Real Sociedad San Sebastián
-1084,FC Málaga
-1049,FC Valencia
-472,UD Las Palmas
-331,CA Osasuna
-418,Real Madrid
-131,FC Barcelona
-13,Atlético Madrid
-368,FC Sevilla
-1050,FC Villarreal
-681,Real Sociedad San Sebastián
-621,Athletic Bilbao
-714,Espanyol Barcelona
-1108,Deportivo Alavés
-1533,SD Eibar
-1084,FC Málaga
-1049,FC Valencia
-940,Celta Vigo
-472,UD Las Palmas
-150,Real Betis Sevilla
-897,Deportivo La Coruna
-1244,CD Leganés
-3368,UD Levante
-12321,FC Girona
-3709,FC Getafe
-621,Athletic Bilbao
-13,Atlético Madrid
-1244,CD Leganés
-1108,Deportivo Alavés
-131,FC Barcelona
-3709,FC Getafe
-12321,FC Girona
-3368,UD Levante
-940,Celta Vigo
-714,Espanyol Barcelona
-150,Real Betis Sevilla
-418,Real Madrid
-681,Real Sociedad San Sebastián
-1533,SD Eibar
-368,FC Sevilla
-1049,FC Valencia
-1050,FC Villarreal
-5358,SD Huesca
-367,Rayo Vallecano
-366,Real Valladolid
-131,FC Barcelona
-13,Atlético Madrid
-418,Real Madrid
-3709,FC Getafe
-1049,FC Valencia
-368,FC Sevilla
-621,Athletic Bilbao
-681,Real Sociedad San Sebastián
-714,Espanyol Barcelona
-1108,Deportivo Alavés
-1533,SD Eibar
-1244,CD Leganés
-150,Real Betis Sevilla
-1050,FC Villarreal
-3368,UD Levante
-366,Real Valladolid
-940,Celta Vigo
-331,CA Osasuna
-16795,FC Granada
-237,RCD Mallorca
-418,Real Madrid
-131,FC Barcelona
-13,Atlético Madrid
-368,FC Sevilla
-1050,FC Villarreal
-3709,FC Getafe
-681,Real Sociedad San Sebastián
-1049,FC Valencia
-621,Athletic Bilbao
-16795,FC Granada
-331,CA Osasuna
-3368,UD Levante
-150,Real Betis Sevilla
-366,Real Valladolid
-2687,FC Cádiz
-1533,SD Eibar
-1108,Deportivo Alavés
-5358,SD Huesca
-940,Celta Vigo
-1531,FC Elche
-13,Atlético Madrid
-131,FC Barcelona
-418,Real Madrid
-368,FC Sevilla
-681,Real Sociedad San Sebastián
-1050,FC Villarreal
-150,Real Betis Sevilla
-621,Athletic Bilbao
-16795,FC Granada
-940,Celta Vigo
-2687,FC Cádiz
-714,Espanyol Barcelona
-331,CA Osasuna
-3368,UD Levante
-1049,FC Valencia
-3709,FC Getafe
-1108,Deportivo Alavés
-1531,FC Elche
-237,RCD Mallorca
-367,Rayo Vallecano
-27,FC Bayern München
-82,VfL Wolfsburg
-18,Borussia Mönchengladbach
-15,Bayer 04 Leverkusen
-167,FC Augsburg
-33,FC Schalke 04
-16,Borussia Dortmund
-533,TSG 1899 Hoffenheim
-24,Eintracht Frankfurt
-86,SV Werder Bremen
-39,1.FSV Mainz 05
-3,1.FC Köln
-42,Hannover 96
-79,VfB Stuttgart
-44,Hertha BSC
-41,Hamburger SV
-4795,FC Ingolstadt 04
-105,SV Darmstadt 98
-27,FC Bayern München
-16,Borussia Dortmund
-15,Bayer 04 Leverkusen
-18,Borussia Mönchengladbach
-33,FC Schalke 04
-39,1.FSV Mainz 05
-44,Hertha BSC
-82,VfL Wolfsburg
-3,1.FC Köln
-41,Hamburger SV
-4795,FC Ingolstadt 04
-167,FC Augsburg
-86,SV Werder Bremen
-105,SV Darmstadt 98
-533,TSG 1899 Hoffenheim
-24,Eintracht Frankfurt
-60,SC Freiburg
-23826,RasenBallsport Leipzig
-27,FC Bayern München
-23826,RasenBallsport Leipzig
-16,Borussia Dortmund
-533,TSG 1899 Hoffenheim
-3,1.FC Köln
-44,Hertha BSC
-60,SC Freiburg
-86,SV Werder Bremen
-18,Borussia Mönchengladbach
-33,FC Schalke 04
-24,Eintracht Frankfurt
-15,Bayer 04 Leverkusen
-167,FC Augsburg
-41,Hamburger SV
-39,1.FSV Mainz 05
-82,VfL Wolfsburg
-79,VfB Stuttgart
-42,Hannover 96
-27,FC Bayern München
-33,FC Schalke 04
-533,TSG 1899 Hoffenheim
-16,Borussia Dortmund
-15,Bayer 04 Leverkusen
-23826,RasenBallsport Leipzig
-79,VfB Stuttgart
-24,Eintracht Frankfurt
-18,Borussia Mönchengladbach
-44,Hertha BSC
-86,SV Werder Bremen
-167,FC Augsburg
-42,Hannover 96
-39,1.FSV Mainz 05
-60,SC Freiburg
-82,VfL Wolfsburg
-38,Fortuna Düsseldorf
-4,1.FC Nürnberg
-27,FC Bayern München
-16,Borussia Dortmund
-23826,RasenBallsport Leipzig
-15,Bayer 04 Leverkusen
-18,Borussia Mönchengladbach
-82,VfL Wolfsburg
-24,Eintracht Frankfurt
-86,SV Werder Bremen
-533,TSG 1899 Hoffenheim
-38,Fortuna Düsseldorf
-44,Hertha BSC
-39,1.FSV Mainz 05
-60,SC Freiburg
-33,FC Schalke 04
-167,FC Augsburg
-3,1.FC Köln
-127,SC Paderborn 07
-89,1.FC Union Berlin
-27,FC Bayern München
-16,Borussia Dortmund
-23826,RasenBallsport Leipzig
-18,Borussia Mönchengladbach
-15,Bayer 04 Leverkusen
-533,TSG 1899 Hoffenheim
-82,VfL Wolfsburg
-60,SC Freiburg
-24,Eintracht Frankfurt
-44,Hertha BSC
-89,1.FC Union Berlin
-33,FC Schalke 04
-39,1.FSV Mainz 05
-3,1.FC Köln
-167,FC Augsburg
-86,SV Werder Bremen
-10,Arminia Bielefeld
-79,VfB Stuttgart
-27,FC Bayern München
-23826,RasenBallsport Leipzig
-16,Borussia Dortmund
-82,VfL Wolfsburg
-24,Eintracht Frankfurt
-15,Bayer 04 Leverkusen
-89,1.FC Union Berlin
-18,Borussia Mönchengladbach
-79,VfB Stuttgart
-60,SC Freiburg
-533,TSG 1899 Hoffenheim
-39,1.FSV Mainz 05
-167,FC Augsburg
-44,Hertha BSC
-10,Arminia Bielefeld
-3,1.FC Köln
-80,VfL Bochum
-65,SpVgg Greuther Fürth
-506,Juventus Turin
-12,AS Rom
-398,Lazio Rom
-430,AC Florenz
-6195,SSC Neapel
-252,Genua CFC
-1038,Sampdoria Genua
-46,Inter Mailand
-416,FC Turin
-5,AC Mailand
-458,Palermo FC
-6574,US Sassuolo
-276,Hellas Verona
-862,Chievo Verona
-749,FC Empoli
-410,Udinese Calcio
-800,Atalanta Bergamo
-1025,FC Bologna
-4102,AC Carpi
-8970,Frosinone Calcio
-800,Atalanta Bergamo
-1025,FC Bologna
-1390,Cagliari Calcio
-862,Chievo Verona
-4083,FC Crotone
-749,FC Empoli
-430,AC Florenz
-252,Genua CFC
-46,Inter Mailand
-506,Juventus Turin
-398,Lazio Rom
-5,AC Mailand
-6195,SSC Neapel
-458,Palermo FC
-2921,Delfino Pescara 1936
-12,AS Rom
-1038,Sampdoria Genua
-6574,US Sassuolo
-416,FC Turin
-410,Udinese Calcio
-800,Atalanta Bergamo
-4171,Benevento Calcio
-1025,FC Bologna
-1390,Cagliari Calcio
-862,Chievo Verona
-4083,FC Crotone
-430,AC Florenz
-252,Genua CFC
-276,Hellas Verona
-46,Inter Mailand
-506,Juventus Turin
-398,Lazio Rom
-5,AC Mailand
-6195,SSC Neapel
-12,AS Rom
-1038,Sampdoria Genua
-6574,US Sassuolo
-2722,SPAL
-416,FC Turin
-410,Udinese Calcio
-800,Atalanta Bergamo
-1025,FC Bologna
-1390,Cagliari Calcio
-862,Chievo Verona
-749,FC Empoli
-430,AC Florenz
-8970,Frosinone Calcio
-252,Genua CFC
-46,Inter Mailand
-506,Juventus Turin
-398,Lazio Rom
-5,AC Mailand
-6195,SSC Neapel
-130,Parma Calcio 1913
-12,AS Rom
-1038,Sampdoria Genua
-6574,US Sassuolo
-2722,SPAL
-416,FC Turin
-410,Udinese Calcio
-800,Atalanta Bergamo
-1025,FC Bologna
-19,Brescia Calcio
-1390,Cagliari Calcio
-430,AC Florenz
-252,Genua CFC
-276,Hellas Verona
-46,Inter Mailand
-506,Juventus Turin
-398,Lazio Rom
-1005,US Lecce
-5,AC Mailand
-6195,SSC Neapel
-130,Parma Calcio 1913
-12,AS Rom
-1038,Sampdoria Genua
-6574,US Sassuolo
-2722,SPAL
-416,FC Turin
-410,Udinese Calcio
-800,Atalanta Bergamo
-4171,Benevento Calcio
-1025,FC Bologna
-1390,Cagliari Calcio
-4083,FC Crotone
-430,AC Florenz
-252,Genua CFC
-276,Hellas Verona
-46,Inter Mailand
-506,Juventus Turin
-398,Lazio Rom
-5,AC Mailand
-6195,SSC Neapel
-130,Parma Calcio 1913
-12,AS Rom
-1038,Sampdoria Genua
-6574,US Sassuolo
-3522,Spezia Calcio
-416,FC Turin
-410,Udinese Calcio
-46,Inter Mailand
-5,AC Mailand
-800,Atalanta Bergamo
-506,Juventus Turin
-6195,SSC Neapel
-398,Lazio Rom
-12,AS Rom
-6574,US Sassuolo
-1038,Sampdoria Genua
-276,Hellas Verona
-252,Genua CFC
-1025,FC Bologna
-410,Udinese Calcio
-430,AC Florenz
-3522,Spezia Calcio
-1390,Cagliari Calcio
-416,FC Turin
-749,FC Empoli
-380,US Salernitana 1919
-607,Venezia FC
-583,FC Paris Saint-Germain
-1041,Olympique Lyon
-162,AS Monaco
-244,Olympique Marseille
-618,AS Saint-Étienne
-40,FC Girondins Bordeaux
-969,HSC Montpellier
-1082,LOSC Lille
-273,FC Stade Rennes
-855,EA Guingamp
-417,OGC Nizza
-595,SC Bastia
-1162,SM Caen
-995,FC Nantes
-1421,Stade Reims
-1158,FC Lorient
-415,FC Toulouse
-1420,Angers SCO
-1095,ESTAC Troyes
-3558,GFC Ajaccio
-583,FC Paris Saint-Germain
-1041,Olympique Lyon
-162,AS Monaco
-417,OGC Nizza
-1082,LOSC Lille
-618,AS Saint-Étienne
-1162,SM Caen
-273,FC Stade Rennes
-1420,Angers SCO
-595,SC Bastia
-40,FC Girondins Bordeaux
-969,HSC Montpellier
-244,Olympique Marseille
-995,FC Nantes
-1158,FC Lorient
-855,EA Guingamp
-415,FC Toulouse
-1159,AS Nancy-Lorraine
-2969,Dijon FCO
-347,FC Metz
-1416,Amiens SC
-1420,Angers SCO
-40,FC Girondins Bordeaux
-1162,SM Caen
-2969,Dijon FCO
-855,EA Guingamp
-1082,LOSC Lille
-1041,Olympique Lyon
-244,Olympique Marseille
-347,FC Metz
-162,AS Monaco
-969,HSC Montpellier
-995,FC Nantes
-417,OGC Nizza
-583,FC Paris Saint-Germain
-273,FC Stade Rennes
-618,AS Saint-Étienne
-667,RC Straßburg Alsace
-415,FC Toulouse
-1095,ESTAC Troyes
-1416,Amiens SC
-1420,Angers SCO
-40,FC Girondins Bordeaux
-1162,SM Caen
-2969,Dijon FCO
-855,EA Guingamp
-1082,LOSC Lille
-1041,Olympique Lyon
-244,Olympique Marseille
-162,AS Monaco
-969,HSC Montpellier
-995,FC Nantes
-417,OGC Nizza
-1160,Nîmes Olympique
-583,FC Paris Saint-Germain
-1421,Stade Reims
-273,FC Stade Rennes
-618,AS Saint-Étienne
-667,RC Straßburg Alsace
-415,FC Toulouse
-1416,Amiens SC
-1420,Angers SCO
-40,FC Girondins Bordeaux
-3911,Stade Brest 29
-2969,Dijon FCO
-1082,LOSC Lille
-1041,Olympique Lyon
-244,Olympique Marseille
-347,FC Metz
-1160,Nîmes Olympique
-162,AS Monaco
-969,HSC Montpellier
-995,FC Nantes
-417,OGC Nizza
-583,FC Paris Saint-Germain
-1421,Stade Reims
-273,FC Stade Rennes
-618,AS Saint-Étienne
-667,RC Straßburg Alsace
-415,FC Toulouse
-583,FC Paris Saint-Germain
-244,Olympique Marseille
-273,FC Stade Rennes
-1082,LOSC Lille
-417,OGC Nizza
-1421,Stade Reims
-1041,Olympique Lyon
-969,HSC Montpellier
-667,RC Straßburg Alsace
-162,AS Monaco
-1420,Angers SCO
-40,FC Girondins Bordeaux
-995,FC Nantes
-3911,Stade Brest 29
-347,FC Metz
-2969,Dijon FCO
-618,AS Saint-Étienne
-1160,Nîmes Olympique
-1158,FC Lorient
-826,RC Lens
-1082,LOSC Lille
-583,FC Paris Saint-Germain
-162,AS Monaco
-1041,Olympique Lyon
-244,Olympique Marseille
-273,FC Stade Rennes
-826,RC Lens
-969,HSC Montpellier
-417,OGC Nizza
-347,FC Metz
-618,AS Saint-Étienne
-40,FC Girondins Bordeaux
-1420,Angers SCO
-1421,Stade Reims
-667,RC Straßburg Alsace
-1158,FC Lorient
-3911,Stade Brest 29
-995,FC Nantes
-1095,ESTAC Troyes
-3524,Clermont Foot 63
+,team_id,team_name,league_id
+0,631,FC Chelsea,2
+1,281,Manchester City,2
+2,11,FC Arsenal,2
+3,985,Manchester United,2
+4,148,Tottenham Hotspur,2
+5,31,FC Liverpool,2
+6,180,FC Southampton,2
+7,2288,Swansea City,2
+8,512,Stoke City,2
+9,873,Crystal Palace,2
+10,29,FC Everton,2
+11,379,West Ham United,2
+12,984,West Bromwich Albion,2
+13,1003,Leicester City,2
+14,762,Newcastle United,2
+15,289,AFC Sunderland,2
+16,405,Aston Villa,2
+17,989,AFC Bournemouth,2
+18,1010,FC Watford,2
+19,1123,Norwich City,2
+20,1132,FC Burnley,2
+21,641,FC Middlesbrough,2
+22,3008,Hull City,2
+23,1237,Brighton & Hove Albion,2
+24,1110,Huddersfield Town,2
+25,543,Wolverhampton Wanderers,2
+26,603,Cardiff City,2
+27,931,FC Fulham,2
+28,350,Sheffield United,2
+29,399,Leeds United,2
+30,1148,FC Brentford,2
+31,131,FC Barcelona,3
+32,418,Real Madrid,3
+33,13,Atlético Madrid,3
+34,1049,FC Valencia,3
+35,368,FC Sevilla,3
+36,1050,FC Villarreal,3
+37,621,Athletic Bilbao,3
+38,940,Celta Vigo,3
+39,1084,FC Málaga,3
+40,714,Espanyol Barcelona,3
+41,367,Rayo Vallecano,3
+42,681,Real Sociedad San Sebastián,3
+43,3368,UD Levante,3
+44,3709,FC Getafe,3
+45,897,Deportivo La Coruna,3
+46,16795,FC Granada,3
+47,1533,SD Eibar,3
+48,472,UD Las Palmas,3
+49,2448,Sporting Gijón,3
+50,150,Real Betis Sevilla,3
+51,1108,Deportivo Alavés,3
+52,1244,CD Leganés,3
+53,331,CA Osasuna,3
+54,12321,FC Girona,3
+55,5358,SD Huesca,3
+56,366,Real Valladolid,3
+57,237,RCD Mallorca,3
+58,2687,FC Cádiz,3
+59,1531,FC Elche,3
+60,27,FC Bayern München,4
+61,82,VfL Wolfsburg,4
+62,18,Borussia Mönchengladbach,4
+63,15,Bayer 04 Leverkusen,4
+64,167,FC Augsburg,4
+65,33,FC Schalke 04,4
+66,16,Borussia Dortmund,4
+67,533,TSG 1899 Hoffenheim,4
+68,24,Eintracht Frankfurt,4
+69,86,SV Werder Bremen,4
+70,39,1.FSV Mainz 05,4
+71,3,1.FC Köln,4
+72,42,Hannover 96,4
+73,79,VfB Stuttgart,4
+74,44,Hertha BSC,4
+75,41,Hamburger SV,4
+76,4795,FC Ingolstadt 04,4
+77,105,SV Darmstadt 98,4
+78,60,SC Freiburg,4
+79,23826,RasenBallsport Leipzig,4
+80,38,Fortuna Düsseldorf,4
+81,4,1.FC Nürnberg,4
+82,127,SC Paderborn 07,4
+83,89,1.FC Union Berlin,4
+84,10,Arminia Bielefeld,4
+85,80,VfL Bochum,4
+86,65,SpVgg Greuther Fürth,4
+87,506,Juventus Turin,5
+88,12,AS Rom,5
+89,398,Lazio Rom,5
+90,430,AC Florenz,5
+91,6195,SSC Neapel,5
+92,252,Genua CFC,5
+93,1038,Sampdoria Genua,5
+94,46,Inter Mailand,5
+95,416,FC Turin,5
+96,5,AC Mailand,5
+97,458,Palermo FC,5
+98,6574,US Sassuolo,5
+99,276,Hellas Verona,5
+100,862,Chievo Verona,5
+101,749,FC Empoli,5
+102,410,Udinese Calcio,5
+103,800,Atalanta Bergamo,5
+104,1025,FC Bologna,5
+105,4102,AC Carpi,5
+106,8970,Frosinone Calcio,5
+107,1390,Cagliari Calcio,5
+108,4083,FC Crotone,5
+109,2921,Delfino Pescara 1936,5
+110,4171,Benevento Calcio,5
+111,2722,SPAL,5
+112,130,Parma Calcio 1913,5
+113,19,Brescia Calcio,5
+114,1005,US Lecce,5
+115,3522,Spezia Calcio,5
+116,380,US Salernitana 1919,5
+117,607,Venezia FC,5
+118,583,FC Paris Saint-Germain,6
+119,1041,Olympique Lyon,6
+120,162,AS Monaco,6
+121,244,Olympique Marseille,6
+122,618,AS Saint-Étienne,6
+123,40,FC Girondins Bordeaux,6
+124,969,HSC Montpellier,6
+125,1082,LOSC Lille,6
+126,273,FC Stade Rennes,6
+127,855,EA Guingamp,6
+128,417,OGC Nizza,6
+129,595,SC Bastia,6
+130,1162,SM Caen,6
+131,995,FC Nantes,6
+132,1421,Stade Reims,6
+133,1158,FC Lorient,6
+134,415,FC Toulouse,6
+135,1420,Angers SCO,6
+136,1095,ESTAC Troyes,6
+137,3558,GFC Ajaccio,6
+138,1159,AS Nancy-Lorraine,6
+139,2969,Dijon FCO,6
+140,347,FC Metz,6
+141,1416,Amiens SC,6
+142,667,RC Straßburg Alsace,6
+143,1160,Nîmes Olympique,6
+144,3911,Stade Brest 29,6
+145,826,RC Lens,6
+146,3524,Clermont Foot 63,6
