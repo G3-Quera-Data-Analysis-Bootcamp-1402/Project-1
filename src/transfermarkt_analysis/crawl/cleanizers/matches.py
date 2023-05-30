@@ -7,7 +7,7 @@ from transfermarkt_analysis.consts import DATA_DIR, CLEANIZED_DIR
 from transfermarkt_analysis.crawl.cleanizers.base import matches_df_concatenator
 
 
-def list_df_cleanizer(df: pd.DataFrame, col: str) -> pd.DataFrame:
+def list_df_cleanizer(df: pd.DataFrame, col: str, team_id_col: str = None) -> pd.DataFrame:
     """
     convert List[Dict] representation to List[Dict]
     used for home_goals, away_goals, home_substutations,
@@ -15,14 +15,37 @@ def list_df_cleanizer(df: pd.DataFrame, col: str) -> pd.DataFrame:
     """
     data = []
 
-    for string_list in df.loc[:, col]:
+    def append_data(string_list, team_id: Any = None):
         try:
             for obj in ast.literal_eval(string_list):
-                data.append(obj)
-        except SyntaxError:
+                if team_id is not None:
+                    data.append({"team_id": team_id, **obj})
+                else:
+                    data.append(obj)
+        except Exception:
             pass
 
+    if team_id_col is not None:
+        for team_id, string_list in zip(df.loc[:, team_id_col], df.loc[:, col]):
+            append_data(string_list, team_id)
+    else:
+        for string_list in df.loc[:, col]:
+            append_data(string_list)
+
+
     return pd.DataFrame(data)
+
+
+def list_df_concatenator(df: pd.DataFrame, target_cols: List[str], result_cols: List[str]) -> pd.DataFrame:
+    """
+        used to concatenate home* away* dataframes
+        target_cols: [home_goals, away_goals], ...
+        resutls_cols: [match_id, team_id, ...]
+    """
+    home: pd.DataFrame = list_df_cleanizer(df, target_cols[0], "home_team_id")
+    away: pd.DataFrame = list_df_cleanizer(df, target_cols[1], "away_team_id")
+    all: pd.DataFrame = pd.concat([home, away])
+    return all.loc[:, result_cols]
 
 
 def statistics_df_cleanizer(df: pd.DataFrame) -> pd.DataFrame:
@@ -156,25 +179,11 @@ def appearances_df_cleanizer() -> pd.DataFrame:
 
 def matches_related_df_cleanizer() -> Dict[str, pd.DataFrame]:
     concated_matches_df: pd.DataFrame = matches_df_concatenator()
-    list_dfs: Dict[str, pd.DataFrame] = {
-        "home_goals": list_df_cleanizer(concated_matches_df, "home_goals"),
-        "away_goals": list_df_cleanizer(concated_matches_df, "away_goals"),
-        "home_substitutions": list_df_cleanizer(
-            concated_matches_df, "home_substitutions"
-        ),
-        "away_substitutions": list_df_cleanizer(
-            concated_matches_df, "away_substitutions"
-        ),
-        "home_cards": list_df_cleanizer(concated_matches_df, "home_cards"),
-        "away_cards": list_df_cleanizer(concated_matches_df, "away_cards"),
-    }
     return {
         "matches_df": matches_df_cleanizer(concated_matches_df),
-        "goals_df": pd.concat([list_dfs["home_goals"], list_dfs["away_goals"]]),
-        "substitutions_df": pd.concat(
-            [list_dfs["home_substitutions"], list_dfs["away_substitutions"]]
-        ),
-        "cards_df": pd.concat([list_dfs["home_cards"], list_dfs["away_cards"]]),
+        "goals_df": list_df_concatenator(concated_matches_df, ["home_goals", "away_goals"], ["match_id", "team_id", "scorrer_id", "assist_id", "goal_type"]),
+        "substitutions_df": list_df_concatenator(concated_matches_df, ["home_substitutions", "away_substitutions"], ["match_id", "team_id", "player_in_id", "player_out_id"]),
+        "cards_df": list_df_concatenator(concated_matches_df, ["home_cards", "away_cards"], ["match_id", "team_id", "player_id", "card"]),
         "penalties": penalties_df_cleanizer(),
         "appearances": appearances_df_cleanizer()
     }
@@ -187,4 +196,4 @@ def store_cleanized_matches_dfs() -> None:
     dfs["substitutions_df"].to_csv(CLEANIZED_DIR / "substitutions.csv", index=False)
     dfs["cards_df"].to_csv(CLEANIZED_DIR / "cards.csv", index=False)
     dfs["penalties"].to_csv(CLEANIZED_DIR / "penalties.csv", index=False)
-    dfs["appearances"].to_csv(CLEANIZED_DIR / "appearances.csv", index=False)
+    dfs["appearances"].to_csv(CLEANIZED_DIR / "player_appearances.csv", index=False)

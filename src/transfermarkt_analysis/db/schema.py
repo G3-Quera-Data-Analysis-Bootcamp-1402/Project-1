@@ -68,7 +68,8 @@ def create_tables():
         "teams",
         metadata,
         Column("team_id", Integer, primary_key=True),
-        Column("team_name", String(64))
+        Column("team_name", String(64)),
+        Column("league_id", Integer, ForeignKey("leagues.league_id"))
     )
     # seasons table
     seasons = Table(
@@ -113,11 +114,8 @@ def create_tables():
         metadata,
         Column("team_id", Integer, ForeignKey("teams.team_id")),
         Column("season_id", Integer, ForeignKey("seasons.season_id")),
-        Column("league_id", Integer, ForeignKey("leagues.league_id")),
-        Column("national_team_players", Integer),
         Column("team_income_fee", Integer),
         Column("team_expenditure_fee", Integer),
-        Column("overall_balance_fee", Integer)
     )
     # matches table
     matches = Table(
@@ -184,7 +182,7 @@ def create_tables():
     )
     # penalties table
     penalties = Table(
-        "missed_penalties",
+        "penalties",
         metadata,
         Column("match_id", Integer, ForeignKey("matches.match_id")),
         Column("team_id", Integer, ForeignKey("teams.team_id")),
@@ -198,7 +196,7 @@ def create_tables():
         Column("match_id", Integer, ForeignKey("matches.match_id")),
         Column("team_id", Integer, ForeignKey("teams.team_id")),
         Column("player_id", Integer, ForeignKey("players.player_id")),
-        Column("color", String(3)),
+        Column("card", String(16)),
     )
     # substitutions table
     substitutions = Table(
