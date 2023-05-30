@@ -65,7 +65,7 @@ def matchday_urls_extractor():
     """
     for league_name, league_url in LEAGUE_MATCHDAY_URLS.items():
         for season in SEASONS_RANGE:
-            for matchday in MATHDAY_RANGE:
+            for matchday in MATCHDAY_RANGE:
                 resp = http.request(
                     "GET",
                     league_url,

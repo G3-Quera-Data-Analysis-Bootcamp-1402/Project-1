@@ -1,6 +1,6 @@
 import time
 from transfermarkt_analysis.crawl.url_extractors import *
-import threading
+import pandas as pd
 from urllib3 import Timeout
 from transfermarkt_analysis.db.schema import FootType
 from pandas import DataFrame, Series
@@ -12,7 +12,6 @@ from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Enum, ForeignKey, Inte
                         MetaData, String, Table, Text, create_engine, text)
 import regex as re
 import sys
-module = sys.modules[__name__]
 
 from mimesis import Generic, Locale
 provider = Generic(Locale.EN)
@@ -67,8 +66,8 @@ def insert_seasons_into_db():
             connection.commit()
 
 
-#insert_seasons_into_db()
-#insert_leagues_into_db()
+insert_seasons_into_db()
+insert_leagues_into_db()
 
 
 

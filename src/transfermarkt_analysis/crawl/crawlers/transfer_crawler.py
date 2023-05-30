@@ -12,6 +12,10 @@ from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Enum, ForeignKey, Inte
                         MetaData, String, Table, Text, create_engine, text)
 import regex as re
 import sys
+import pandas as pd
+import urllib3
+from bs4 import BeautifulSoup
+from consts import *
 
 
 from mimesis import Generic, Locale
@@ -48,7 +52,6 @@ def scrape_transfers_data(season_start_year: int, league_url: str, http, headers
         generates transfers_url
         """
         url_parts = league_url.split("/")
-        
         transfers_url = url_parts[0] + "/" + url_parts[1] + "/" + url_parts[2] + "/" + url_parts[3] + "/transfers/" + url_parts[5] + "/" + url_parts[6] + f"/plus/?saison_id={str(season_start_year)}&s_w=&leihe=1&intern=0&intern=1"
 
         return transfers_url
@@ -66,7 +69,7 @@ def scrape_transfers_data(season_start_year: int, league_url: str, http, headers
         return soup
     
     def get_transfers(soup: BeautifulSoup) -> DataFrame:
-        df = pd.DataFrame(columns = ["player_name","player_id", "season_id", "left_team", "joined_team", "market_value", "fee_of_transfer"])
+        df = pd.DataFrame(columns = ["player_name", "player_id", "season_id", "left_team", "left_team_id", "joined_team", "joined_team_id", "market_value", "fee_of_transfer"])
         def decode_market_value(player_market_value):
             player_market_value = player_market_value.replace(",", ".")
             if "k" in player_market_value: 
@@ -104,6 +107,7 @@ def scrape_transfers_data(season_start_year: int, league_url: str, http, headers
             
             try:
                 team_name = team_table.h2.a["title"]
+                team_id = team_table.h2.a["href"].split("/")[4]
                 transfer_tables = team_table.find_all("div", attrs= {"class": "responsive-table"})
             except:
                 pass
@@ -138,8 +142,10 @@ def scrape_transfers_data(season_start_year: int, league_url: str, http, headers
                     player_market_value = 0
                 try:
                     from_club = cell_elements[7].a["title"].strip()
+                    from_club_id = cell_elements[7].a["href"].split("/")[4]
                 except: 
                     from_club = "0"
+                    from_club_id = "0"
                 try:
                     from_club_nationality = cell_elements[7].img["title"].strip()
                 except:
@@ -153,7 +159,7 @@ def scrape_transfers_data(season_start_year: int, league_url: str, http, headers
                 except:
                     trasnfer_id = 0
                 #print(from_club, from_club_nationality, team_name, player_name, player_id, player_age, player_nationality, player_position, player_market_value, fee, trasnfer_id)
-                df.loc[len(df)] = {"player_name": player_name ,"player_id": player_id, "season_id": season_start_year, "left_team": from_club, "joined_team": team_name, "market_value": player_market_value, "fee_of_transfer": fee}
+                df.loc[len(df)] = {"player_name": player_name ,"player_id": player_id, "season_id": season_start_year, "left_team": from_club, "left_team_id": from_club_id, "joined_team": team_name, "joined_team_id": team_id, "market_value": player_market_value, "fee_of_transfer": fee}
             
             for row_element in transfer_tables[1].table.tbody.find_all("tr"):
                 cell_elements = row_element.find_all("td")
@@ -183,8 +189,10 @@ def scrape_transfers_data(season_start_year: int, league_url: str, http, headers
                     player_market_value = 0
                 try:
                     from_club = cell_elements[7].a["title"].strip()
+                    from_club_id = cell_elements[7].a["href"].split("/")[4]
                 except: 
                     from_club = "0"
+                    from_club_id = 0
                 try:
                     from_club_nationality = cell_elements[7].img["title"].strip()
                 except:
@@ -198,7 +206,7 @@ def scrape_transfers_data(season_start_year: int, league_url: str, http, headers
                 except:
                     trasnfer_id = 0
                 #print(from_club, from_club_nationality, team_name, player_name, player_id, player_age, player_nationality, player_position, player_market_value, fee, trasnfer_id)
-                df.loc[len(df)] = {"player_name": player_name, "player_id": player_id, "season_id": season_start_year, "left_team": team_name, "joined_team": from_club, "market_value": player_market_value, "fee_of_transfer": fee}
+                df.loc[len(df)] = {"player_name": player_name, "player_id": player_id, "season_id": season_start_year, "left_team": team_name, "left_team_id": team_id, "joined_team": from_club, "joined_team_id": from_club_id, "market_value": player_market_value, "fee_of_transfer": fee}
         return df, team_income_expenditure
 
     http, headers = reset_user_agent(http, headers)
@@ -218,7 +226,7 @@ def get_transfers_df() -> DataFrame:
         }
     timeout = Timeout(connect = 10, read = 10)
     http = urllib3.PoolManager(headers=headers, timeout= timeout)
-    transfers_df = pd.DataFrame(columns = ["player_id", "season_id", "left_team", "joined_team", "fee_of_transfer"])
+    transfers_df = pd.DataFrame(columns = ["player_id", "season_id", "left_team", "left_team_id", "joined_team", "joined_team_id", "fee_of_transfer"])
     team_income_expenditures = pd.DataFrame(columns= ["season", "team_name", "income", "expenditure"])
     db_conf, db_url = load_db_config()
     db_engine = create_engine(db_url)
@@ -246,4 +254,4 @@ def insert_transfers_into_db(df: DataFrame):
     df[1].to_csv("data/team_income_expenditures.csv")
 
 
-#insert_transfers_into_db(get_transfers_df())
+insert_transfers_into_db(get_transfers_df())
