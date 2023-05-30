@@ -1,10 +1,11 @@
 from colorama import Fore
 
-from transfermarkt_analysis.db.schema import create_tables
+from transfermarkt_analysis.db import create_tables, initialize_db
 
 
 try:
     create_tables()
-    print(Fore.GREEN + "Database successfully created :)")
+    initialize_db()
+    print(Fore.GREEN + "Database Setup Is Done :)")
 except Exception as err:
     raise err
