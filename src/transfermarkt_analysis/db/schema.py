@@ -2,7 +2,7 @@ from enum import Enum as PyEnum
 from os import getenv
 
 import dotenv
-from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Enum, ForeignKey, Integer,
+from sqlalchemy import (TIMESTAMP, Boolean, Column, Enum, ForeignKey, Integer,
                         MetaData, String, Table, Text, create_engine)
 
 
@@ -92,9 +92,8 @@ def create_tables():
         Column("contract_id", Integer, autoincrement=True, primary_key=True),
         Column("player_id", Integer, ForeignKey("players.player_id")),
         Column("season_id", Integer, ForeignKey("seasons.season_id")),
-        Column("date", Date),
-        Column("left_team", Integer, ForeignKey("teams.team_id")),
-        Column("joined_team", Integer, ForeignKey("teams.team_id")),
+        Column("left_team_id", Integer, ForeignKey("teams.team_id")),
+        Column("joined_team_id", Integer, ForeignKey("teams.team_id")),
         Column("fee_of_transfer", Integer)
     )
     # player_appearances table
