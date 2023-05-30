@@ -75,6 +75,10 @@ def scrape_team_data(team_url: str, http, headers) -> tuple:
         soup = BeautifulSoup(resp.data, "html.parser")
         return soup
 
+    def get_league(soup):
+        league = soup.find("span", attrs= {"class": "data-header__club"}).a.text.strip()
+        return league
+
     def get_team_name(soup: BeautifulSoup) -> str:
         """
         Gets team name from webpage
@@ -88,7 +92,8 @@ def scrape_team_data(team_url: str, http, headers) -> tuple:
         soup = load_page_soup(team_url, http)
         team_id = generate_team_id(team_url)
         team_name = get_team_name(soup)
-        return (team_id, team_name)
+        league = get_league(soup)
+        return (team_id, team_name, league)
     except:
         return scrape_team_data(team_url, http, headers)
     
@@ -99,12 +104,13 @@ def get_teams_df():
         }
     timeout = Timeout(connect = 10, read = 10)
     http = urllib3.PoolManager(headers=headers, timeout= timeout)
-    teams = pd.DataFrame(columns= ["team_id", "team_name"])
+    teams = pd.DataFrame(columns= ["team_id", "team_name", "legaue"])
     team_urls = read_team_urls()
     for team_url in tqdm(team_urls, desc= "Scraping teams"):
-        (team_id, team_name) = scrape_team_data(team_url, http, headers)
-        teams.loc[len(teams)] = {"team_id": team_id, "team_name": team_name}
+        (team_id, team_name, league) = scrape_team_data(team_url, http, headers)
+        teams.loc[len(teams)] = {"team_id": team_id, "team_name": team_name, "league": league}
     teams.set_index("team_id", drop= True, inplace= True)
+    teams.drop_duplicates("team_name")
     return teams
 
 
