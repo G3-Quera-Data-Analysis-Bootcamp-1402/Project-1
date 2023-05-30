@@ -11,12 +11,12 @@ cnx = mysql.connector.connect(
 
 cursor = cnx.cursor()
 
-if cnx.is_connected():
-    print("Connected to MySQL server")
-else:
-    print("Connection to MySQL server failed")
+# if cnx.is_connected():
+#     print("Connected to MySQL server")
+# else:
+#     print("Connection to MySQL server failed")
 
-cnx.close()
+# cnx.close()
 
 # #  توزیع تعداد بازی هایی که بازیکنان در یک فصل انجام می دهند
 games_query = """
@@ -57,9 +57,11 @@ ORDER BY games_played DESC;
 
 # # رابطه بین تعداد گل های زده شده و قیمت تخمینی سایت برای یک بازیکن
 goals_price_query = """
-SELECT goals_scored, estimated_price
-FROM players
-WHERE season = '2021-2022'
+SELECT player_id, SUM (*) AS player_goals FROM goals JOIN matches JOIN seasons
+WHERE seasons = '2021-2022'
+GROUP BY player_id, season_id
+
+SELECT * from marketvalues JOIN seasons 
 """
 
 # cursor.execute(goals_price_query)
@@ -72,9 +74,9 @@ WHERE season = '2021-2022'
 
 # # رابطه بین تعداد گل های زده شده و قیمت تخمینی سایت برای یک مهاجم
 # striker_query = """
-# SELECT goal_scored, estimated_price
-# FROM players
-# WHERE season = '2021-2022' AND position = 'Striker' 
+# SELECT player_id, SUM (*) AS player_goals FROM goals JOIN matches JOIN seasons
+# WHERE seasons = '2021-2022'
+# GROUP BY player_id, season_id
 # """
 
 # cursor.execute(striker_query)
