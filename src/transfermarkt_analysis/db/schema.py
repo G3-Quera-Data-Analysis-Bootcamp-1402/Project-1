@@ -113,6 +113,7 @@ def create_tables():
         metadata,
         Column("team_id", Integer),
         Column("season_id", Integer),
+        Column("league_id", Integer),
         Column("team_income_fee", Integer),
         Column("team_expenditure_fee", Integer),
     )
