@@ -1,5 +1,8 @@
 #KPI Definition and Normalization
 
+
+
+
 #Importing Liberaries
 import pymysql
 import pandas as pd
@@ -16,7 +19,7 @@ where position_code_abstract = 'B'
                                    WHERE team_id = t1.team_id
                                      AND position_code_abstract = 'F');""")
 
-conn = pymysql.connect(host='localhost', user='username', password='password', db='transfermarkt')
+conn = pymysql.connect(host='localhost', user='root', password='Mba4957@ms3#13', db='transfermarkt')
 
 # Retrieve the market_value column from table1
 with conn.cursor() as cursor:
@@ -36,7 +39,7 @@ df.to_csv('phase3_table_players.csv', index=False)
 #Coach 1
 
 # Connect to the database
-conn = pymysql.connect(host='localhost', user='username', password='password', db='transfermarkt')
+conn = pymysql.connect(host='localhost', user='root', password='Mba4957@ms3#13', db='transfermarkt')
 
 query = text("""
 select *
@@ -84,7 +87,7 @@ df.to_csv('table_part1.csv', index=False)
 #Coach 2
 
 # Connect to the database
-conn = pymysql.connect(host='localhost', user='username', password='password', db='transfermarkt')
+conn = pymysql.connect(host='localhost', user='root', password='Mba4957@ms3#13', db='transfermarkt')
 
 # query1 = text("""
 # select Player_ID, Player_Name, KPI_per_player, Market_value
@@ -149,7 +152,7 @@ plt.show()
 #Coach 3
 
 # Connect to the database
-conn = pymysql.connect(host='localhost', user='username', password='password', db='transfermarkt')
+conn = pymysql.connect(host='localhost', user='root', password='Mba4957@ms3#13', db='transfermarkt')
 
 # query1 = text("""
 # select KPI_per_player
@@ -216,10 +219,9 @@ plt.show()
 #Coach 4
 
 # Connect to the database
-conn = pymysql.connect(host='localhost', user='username', password='password', db='transfermarkt')
+conn = pymysql.connect(host='localhost', user='root', password='Mba4957@ms3#13', db='transfermarkt')
 
 query1 = text("""
-select *
 select player_id, most_frequent_position_code
 from (select player_id, KPI_per_player
       from (select player_id, avg(KPI) as KPI_per_player
@@ -296,7 +298,7 @@ plt.show()
 
 ###############################################
 #chams2122 = [Paris SG, Manchester City, real Madrid, AC Milan, Bayern Munich]
-conn = pymysql.connect(host='localhost', user='username', password='password', db='transfermarkt')
+conn = pymysql.connect(host='localhost', user='root', password='Mba4957@ms3#13', db='transfermarkt')
 query = text(""""
 select team_name, Player_Name, KPI_per_player from (select team_id, team_name from teams where team_name in [Paris SG, Manchester City, real Madrid, AC Milan, Bayern Munich])t0 join
 (select Player_ID, Player_Name, KPI_per_player
@@ -320,3 +322,24 @@ df = pd.DataFrame(table_data, columns=['team_name', 'Player_Name', 'KPI_per_play
 
 # Export the dataframes to CSV files: this line can be ingnored and it's just for a better documntation.
 df.to_csv('table.csv', index=False)
+
+#test1
+query_test1_1 = text("""select player_id, date_of_birth, season_id, league_id
+        from players
+         join player_appearances pa on players.player_id = pa.player_id
+         join matches m on pa.match_id = m.match_id
+         join League_start_time lst on match.league_id = lst.league_id;""")
+
+# Retrieve the market_value column from table1
+with conn.cursor() as cursor:
+    cursor.execute(query_test1_1)
+    table_data = cursor.fetchall()
+
+conn.close()
+
+# Convert the query results to dataframes
+df1 = pd.DataFrame(table_data, columns=['player_id', 'date_of_birth', 'season_id', 'league_id'])
+for season_iterator in range(1, 8):
+  for league_iterator in range(1, 7):
+      end_life = df_league_start[season_iterator, league_iterator]
+      age = end_life - df1['date_of_birth']
