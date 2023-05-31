@@ -57,11 +57,14 @@ with open('games_distribution.csv', 'w', newline='') as csvfile:
 
 # # رابطه بین تعداد گل های زده شده و قیمت تخمینی سایت برای یک بازیکن
 goals_price_query = """
-SELECT player_id, SUM (*) AS player_goals FROM goals JOIN matches JOIN seasons
-WHERE seasons = '2021-2022'
-GROUP BY player_id, season_id
+SELECT player_id, COUNT(*) AS games_played, COUNT(*) * 100 / (
+    SELECT COUNT(*) FROM player_appearances
+) AS percentage_of_games
 
-SELECT * from marketvalues JOIN seasons 
+FROM player_appearances JOIN matches m2 on player_appearances.season_id = m2.season_id
+WHERE m2.season_id = 2015
+GROUP BY player_id
+ORDER BY games_played DESC;
 """
 
 cursor.execute(goals_price_query)
